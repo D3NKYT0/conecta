@@ -77,7 +77,10 @@ class LoginScreen(MDScreen):
             bearer = encrypter.decrypt_text(self.token['Bearer'], user['data']['bearer']['iv'], user['data']['bearer']['key'])
             headers = {"Authorization": f"Bearer {bearer}"}
             response = requests.get(f"{self.host}/ti/user/{login}", headers=headers, timeout=10.0)
-            return True if int(response.status_code) == 200 else False
+            if int(response.status_code) == 200:
+                return True
+            self.get_message("Verificar usuario do sistema!", colors['Purple']['500'], "#ffffff")    
+            return True
         except (requests.exceptions.Timeout, requests.exceptions.ConnectionError):
             return False
 
