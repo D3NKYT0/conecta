@@ -1,0 +1,60 @@
+#: import hex kivy.utils.get_color_from_hex
+
+
+<StartScreen>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'images/backgrounds/wallpaper_blue.jpg'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: 10, 50, 10, 10
+
+        MDBoxLayout:
+            size_hint_y: .2
+
+        BoxLayout:
+            size_hint_y: .4
+            size_hint_x: .4
+            pos_hint: {'center_x': 0.5}
+
+            Image:
+                source: "images/logo/conecta_no_color.png"
+                allow_stretch: True
+                keep_ratio: True
+                size_hint_y: None
+                size_hint_x: None
+                width: self.parent.width
+                height: self.parent.width/self.image_ratio
+
+        MDBoxLayout:
+            size_hint_y: .2
+
+        MDBoxLayout:
+            size_hint_y: .2
+            orientation: 'vertical'
+            padding: 0, 50, 0, 0
+            spacing: 0
+
+            MDRectangleFlatButton:
+                text: "Iniciar"
+                font_size: "30sp"
+                md_bg_color: hex('#153788')
+                theme_text_color: "Custom"
+                text_color: "white"
+                line_color: "white"
+                pos_hint: {'center_x': 0.5}
+                size_hint_x: .4
+                size_hint_y: .2
+                rounded_button: True
+                elevation: 0 
+                on_release:
+                    root.login()
+
+            MDBoxLayout:
+                size_hint_y: .6
+
+        MDBoxLayout:
+            size_hint_y: .3

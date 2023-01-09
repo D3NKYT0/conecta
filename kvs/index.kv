@@ -1,0 +1,407 @@
+#: import hex kivy.utils.get_color_from_hex
+
+
+<IndexScreen>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'images/backgrounds/wallpaper_index.png'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            padding: 5
+            spacing: 5
+            size_hint_y: 10
+            md_bg_color: hex('#153788')
+            orientation: 'horizontal'
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                size_hint_x: 5
+                padding: 10, 0, 0, 0
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.5
+
+                    Image:
+                        source: "images/logo/logo-toolbar.png"
+                        allow_stretch: True
+                        keep_ratio: True
+                        size_hint_y: None
+                        size_hint_x: None
+                        width: self.parent.width
+                        height: self.parent.width/self.image_ratio
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.5
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                size_hint_x: 5
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.9
+                    spacing: 50
+
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_x: 0.5
+
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_x: 0.3
+
+                        MDTextButton:
+                            text: 'INSCRITOS'
+                            color: 'white'
+                            bold: True
+                            font_size: '35sp'
+                            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_x: 0.2
+
+                        MDTextButton:
+                            text: 'SPC'
+                            color: 'white'
+                            bold: True
+                            font_size: '35sp'
+                            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.1
+
+                    MDIconButton:
+                        icon: "images/icons/logoff.png"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        on_release: root.dialog_spam()
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: 10
+            
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            size_hint_y: 80
+            
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: 90
+                padding: 20
+                spacing: 20
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 65
+                    spacing: 20
+
+                    MDCard:
+                        md_bg_color: hex('#E0E9ED')
+                        radius: 5
+                        size_hint_x: 33
+                        elevation: 2
+
+                        MDRelativeLayout:
+
+                            MDIconButton:
+                                id: button_pre
+                                icon: "dots-vertical"
+                                pos_hint: {"top": 1, "right": 1}
+                                on_release: root.menu_pre.open()
+
+                            MDBoxLayout:
+                                pos_hint: {"center_y": 0.44}
+                                orientation: 'vertical'
+                                spacing: 10
+                                padding: 20
+
+                                MDBoxLayout:
+                                    md_bg_color: 'white'
+                                    size_hint_y: 10
+
+                                    MDLabel:
+                                        text: 'PRE-CADASTRO'
+                                        color: app.theme_cls.primary_color
+                                        bold: True
+                                        halign: "center"
+                                        font_size: '20sp'
+
+                                MDBoxLayout:
+                                    size_hint_y: 40
+
+                                    Image:
+                                        id: image_one
+                                        source: "temp/grafico_line.png"
+                                        allow_stretch: True
+                                        keep_ratio: True
+                                        size_hint_y: None
+                                        size_hint_x: None
+                                        width: self.parent.width
+                                        height: self.parent.width/self.image_ratio
+
+                                MDBoxLayout:
+                                    size_hint_y: 4
+
+                                MDBoxLayout:
+                                    md_bg_color: hex('#153788')
+                                    size_hint_y: 25
+                                    orientation: 'vertical'
+                                    padding: 20
+                                    spacing: 20
+
+                                    MDLabel:
+                                        text: 'TOTAL'
+                                        color: 'white'
+                                        bold: True
+                                        halign: "center"
+                                        font_size: '30sp'
+
+                                    MDLabel:
+                                        id: total_pre
+                                        text: '1.200'
+                                        color: 'white'
+                                        bold: True
+                                        halign: "center"
+                                        font_size: '60sp'
+
+                                MDBoxLayout:
+                                    size_hint_y: 4
+
+                    MDCard:
+                        md_bg_color: hex('#E0E9ED')
+                        radius: 5
+                        size_hint_x: 33
+                        elevation: 2
+
+                        MDRelativeLayout:
+
+                            MDIconButton:
+                                id: button_consulta
+                                icon: "dots-vertical"
+                                pos_hint: {"top": 1, "right": 1}
+                                on_release: root.menu_consulta.open()
+
+                            MDBoxLayout:
+                                pos_hint: {"center_y": 0.44}
+                                orientation: 'vertical'
+                                spacing: 10
+                                padding: 20
+
+                                MDBoxLayout:
+                                    md_bg_color: 'white'
+                                    size_hint_y: 10
+
+                                    MDLabel:
+                                        text: 'CONSULTA RESTRINÇÃO'
+                                        color: app.theme_cls.primary_color
+                                        bold: True
+                                        halign: "center"
+                                        font_size: '20sp'
+
+                                MDBoxLayout:
+                                    size_hint_y: 40
+
+                                    Image:
+                                        id: image_two
+                                        source: "temp/grafico_bar.png"
+                                        allow_stretch: True
+                                        keep_ratio: True
+                                        size_hint_y: None
+                                        size_hint_x: None
+                                        width: self.parent.width
+                                        height: self.parent.width/self.image_ratio
+
+                                MDBoxLayout:
+                                    size_hint_y: 4
+
+                                MDBoxLayout:
+                                    md_bg_color: hex('#153788')
+                                    size_hint_y: 25
+                                    orientation: 'vertical'
+                                    padding: 20
+                                    spacing: 20
+
+                                    MDLabel:
+                                        text: 'TOTAL'
+                                        color: 'white'
+                                        bold: True
+                                        halign: "center"
+                                        font_size: '30sp'
+
+                                    MDLabel:
+                                        id: total_consulta
+                                        text: '1.200'
+                                        color: 'white'
+                                        bold: True
+                                        halign: "center"
+                                        font_size: '60sp'
+
+                                MDBoxLayout:
+                                    size_hint_y: 4
+
+                    MDCard:
+                        md_bg_color: hex('#E0E9ED')
+                        radius: 5
+                        size_hint_x: 33
+                        elevation: 2
+
+                        MDRelativeLayout:
+
+                            MDIconButton:
+                                id: button_lse
+                                icon: "dots-vertical"
+                                pos_hint: {"top": 1, "right": 1}
+                                on_release: root.menu_lse.open()
+
+                            MDBoxLayout:
+                                pos_hint: {"center_y": 0.44}
+                                orientation: 'vertical'
+                                spacing: 10
+                                padding: 20
+
+                                MDBoxLayout:
+                                    md_bg_color: 'white'
+                                    size_hint_y: 10
+
+                                    MDLabel:
+                                        text: 'LSE'
+                                        color: app.theme_cls.primary_color
+                                        bold: True
+                                        halign: "center"
+                                        font_size: '20sp'
+
+                                MDBoxLayout:
+                                    size_hint_y: 40
+
+                                    Image:
+                                        id: image_three
+                                        source: "temp/grafico_pie.png"
+                                        allow_stretch: True
+                                        keep_ratio: True
+                                        size_hint_y: None
+                                        size_hint_x: None
+                                        width: self.parent.width
+                                        height: self.parent.width/self.image_ratio
+
+                                MDBoxLayout:
+                                    size_hint_y: 4
+
+                                MDBoxLayout:
+                                    md_bg_color: hex('#153788')
+                                    size_hint_y: 25
+                                    orientation: 'vertical'
+                                    padding: 20
+                                    spacing: 20
+
+                                    MDLabel:
+                                        text: 'TOTAL'
+                                        color: 'white'
+                                        bold: True
+                                        halign: "center"
+                                        font_size: '30sp'
+
+                                    MDLabel:
+                                        id: total_lse
+                                        text: '1.200'
+                                        color: 'white'
+                                        bold: True
+                                        halign: "center"
+                                        font_size: '60sp'
+
+                                MDBoxLayout:
+                                    size_hint_y: 4
+
+                MDBoxLayout:
+                    size_hint_x: 33
+
+                    Image:
+                        source: "images/back-side.png"
+                        allow_stretch: True
+                        keep_ratio: True
+                        size_hint_y: None
+                        size_hint_x: None
+                        width: self.parent.width
+                        height: self.parent.width/self.image_ratio
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint_y: 10
+                md_bg_color: 0,0,0,1
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: 50
+                    padding: 10
+                    spacing: 10
+                    md_bg_color: 1,1,1,1
+
+                    MDLabel:
+                        id: information
+                        text: 'APLICAÇÃO EM FASE DE DESENVOLVIMENTO...'
+                        color: app.theme_cls.primary_color
+                        bold: True
+                        halign: "center"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        font_size: '20sp'
+
+                MDBoxLayout:
+                    padding: 7
+                    spacing: 10
+                    size_hint_y: 50
+                    md_bg_color: hex('#153788')
+
+                    MDLabel:
+                        id: data
+                        color: "white"
+                        bold: True
+                        halign: "center"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        font_size: '18sp'
+
+                    MDLabel:
+                        id: hora
+                        color: "white"
+                        bold: True
+                        halign: "center"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        font_size: '18sp'
+
+                    MDLabel:
+                        id: user_name
+                        color: "white"
+                        bold: True
+                        halign: "center"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        font_size: '18sp'
+
+                    MDLabel:
+                        id: user
+                        color: 1,1,1,1
+                        bold: True
+                        halign: "center"
+                        font_size: '18sp'
+
+                    MDLabel:
+                        id: ip_address
+                        color: "white"
+                        bold: True
+                        halign: "center"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        font_size: '18sp'
+
+                    MDLabel:
+                        id: machine
+                        color: 1,1,1,1
+                        bold: True
+                        halign: "center"
+                        font_size: '18sp'

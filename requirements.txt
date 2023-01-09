@@ -1,0 +1,9 @@
+https://github.com/kivy/kivy/archive/master.zip
+https://github.com/kivymd/KivyMD/archive/master.zip
+kaki
+psutil
+requests
+matplotlib
+pyinstaller
+pycryptodome
+pymongo[srv]
