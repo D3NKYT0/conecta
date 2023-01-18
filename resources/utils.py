@@ -58,7 +58,7 @@ def create_graphics(x_data: list, y_data: list, second_data: list = None, title:
 
     plt.xticks(rotation=45)
     plt.legend();
-    plt.savefig('temp/grafico_line.png') 
+    plt.savefig('c:/tmp/grafico_line.png') 
     plt.close()
 
 
@@ -66,7 +66,7 @@ def create_graphic_bar(x_data):
     plt.hist(x_data, 5, facecolor='blue', alpha=0.5)
     plt.title('Grafico Histograma')
     plt.xticks(rotation=45)
-    plt.savefig('temp/grafico_bar.png')
+    plt.savefig('c:/tmp/grafico_bar.png')
     plt.close()
 
 
@@ -83,7 +83,7 @@ def create_graphic_pizza(data: dict):
         startangle=90
     )
     plt.title('Grafico Pizza')
-    plt.savefig('temp/grafico_pie.png')
+    plt.savefig('c:/tmp/grafico_pie.png')
     plt.close()
 
 
