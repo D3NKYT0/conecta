@@ -86,8 +86,7 @@ class LoginScreen(MDScreen):
             headers['conecta-age-key'] = key
             response = requests.get(f"{self.host}/ti/user/{login}", headers=headers, timeout=10.0)
             if int(response.status_code) == 200:
-                return True
-            # self.get_message("Verificar usuario do sistema!", colors['Purple']['500'], "#ffffff")    
+                return True   
             return True
         except (requests.exceptions.Timeout, requests.exceptions.ConnectionError):
             return False
@@ -150,6 +149,14 @@ class LoginScreen(MDScreen):
             elif int(response.status_code) == 200:
                 return True, content
 
+            elif int(response.status_code) == 403:
+                self.get_message("Aplicativo Incompativel!", colors['Purple']['500'], "#ffffff") 
+                return False, content
+
+            else:
+                self.get_message("Erro desconhecido!", colors['Red']['500'], "#ffffff")
+                return False, content
+
         elif token_data['is_logged']:
             self.get_message("Você já esta logado em outro terminal!", colors['Red']['500'], "#ffffff")
             return False, token_data['content']
@@ -170,7 +177,7 @@ class LoginScreen(MDScreen):
 
         response = self.get_token(loginText, passwordText)
         
-        if response[0]:
+        if response[0] is True:
 
             cl_users = self.app.db.cd("users")
             user = cl_users.find_one({"_id": str(response[1]['user']['id'])})
