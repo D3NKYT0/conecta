@@ -21,7 +21,7 @@ from screens.login import LoginScreen  # <-- tela de auth
 from screens.index import IndexScreen  # <-- app inicial
 
 # controle de desenvolvimento
-IS_LIVE = True  # se TRUE liga o app de live caso contrario app normal
+IS_LIVE = False  # se TRUE liga o app de live caso contrario app normal
 IS_ICON = False  # se TRUE liga o app de icons caso contrario app normal
 
 
