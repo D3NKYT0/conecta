@@ -85,10 +85,16 @@ class LoginScreen(MDScreen):
             headers['conecta-age-hash'] = hash
             headers['conecta-age-key'] = key
             response = requests.get(f"{self.host}/ti/user/{login}", headers=headers, timeout=10.0)
-            if int(response.status_code) == 200:
-                return True   
-            return True
+
+            if int(response.status_code) == 403:
+                self.get_message("Aplicativo Incompativel!", colors['Purple']['500'], "#ffffff") 
+                return False
+
+            else:
+                return True
+
         except (requests.exceptions.Timeout, requests.exceptions.ConnectionError):
+            self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
             return False
 
     def get_token_mongo(self, user_id):
@@ -128,26 +134,28 @@ class LoginScreen(MDScreen):
             try:
                 response = requests.post(f"{self.host}/auth/token", data=body, headers=headers, timeout=10.0)
                 content = json.loads(response.content)
+
             except requests.exceptions.Timeout:
                 self.get_message("Falha na comunicação!", colors['Red']['500'], "#ffffff")
                 return False, dict()
+
             except requests.exceptions.ConnectionError:
                 self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
                 return False, dict()
 
-            if int(response.status_code) not in [400]:
+            if int(response.status_code) in [200]:
                 data = {"_id": login, "content": content, "is_logged": True}
                 cl_tokens.insert_one(data)
 
             data['is_logged'] = False  # evitando a vaidação antes da passagem de tela
             self.is_logged = data
 
-            if int(response.status_code) == 400:
+            if int(response.status_code) == 200:
+                return True, content
+
+            elif int(response.status_code) == 400:
                 self.get_message("Login/Senha Invalidos!", colors['Yellow']['500'])
                 return False, content
-
-            elif int(response.status_code) == 200:
-                return True, content
 
             elif int(response.status_code) == 403:
                 self.get_message("Aplicativo Incompativel!", colors['Purple']['500'], "#ffffff") 
@@ -217,7 +225,7 @@ class LoginScreen(MDScreen):
             if not self.db_is_active(loginText):
                 cl_tokens = self.app.db.cd("tokens")
                 cl_tokens.update_one({"_id": loginText}, {"$set": {"is_logged": False}})
-                return self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
+                return
 
             self.app.username = loginText
             self.app.password = passwordText
