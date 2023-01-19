@@ -31,7 +31,7 @@ class AgeApp(MDApp):
 
     def __init__(self, token, host, **kwargs):
         super().__init__(**kwargs)
-        self.__version__ = "0.0.10.15"
+        self.__version__ = "0.0.10.21"
         self.token = token
         self.manager = ScreenManager()
         self.DEBUG = False
