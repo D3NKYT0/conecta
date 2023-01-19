@@ -81,13 +81,19 @@ class LoginScreen(MDScreen):
             user = cl_users.find_one({"_id": self.token['user_id']})
             bearer = encrypter.decrypt_text(self.token['Bearer'], user['data']['bearer']['iv'], user['data']['bearer']['key'])
             headers = {"Authorization": f"Bearer {bearer}"}
-            hash, key = core.do_hash()
+            hash, key_hash = core.do_hash()
             headers['conecta-age-hash'] = hash
-            headers['conecta-age-key'] = key
+            headers['conecta-age-key'] = key_hash
             response = requests.get(f"{self.host}/ti/user/{login}", headers=headers, timeout=10.0)
 
             if int(response.status_code) == 403:
                 self.get_message("Aplicativo Incompativel!", colors['Purple']['500'], "#ffffff") 
+                return False
+
+            if int(response.status_code) == 401:
+                cl_tokens = self.app.db.cd("tokens")
+                cl_tokens.delete_one({"_id": login})
+                self.get_message("Token Invalido ou Expirado!", colors['Yellow']['500']) 
                 return False
 
             else:
@@ -127,15 +133,19 @@ class LoginScreen(MDScreen):
             body = json.dumps({"login": login, "password": password})
             headers = {"Content-Type": "application/json"}
 
-            hash, key = core.do_hash()
+            hash, key_hash = core.do_hash()
             headers['conecta-age-hash'] = hash
-            headers['conecta-age-key'] = key
+            headers['conecta-age-key'] = key_hash
 
             try:
                 response = requests.post(f"{self.host}/auth/token", data=body, headers=headers, timeout=10.0)
                 content = json.loads(response.content)
 
             except requests.exceptions.Timeout:
+                self.get_message("Falha na comunicação!", colors['Red']['500'], "#ffffff")
+                return False, dict()
+
+            except json.decoder.JSONDecodeError:
                 self.get_message("Falha na comunicação!", colors['Red']['500'], "#ffffff")
                 return False, dict()
 
@@ -274,9 +284,9 @@ class LoginScreen(MDScreen):
 
         headers = {"Content-Type": "application/json"}
         headers["Authorization"] = f"Bearer {self.token['Bearer']}"
-        hash, key = core.do_hash()
+        hash, key_hash = core.do_hash()
         headers['conecta-age-hash'] = hash
-        headers['conecta-age-key'] = key
+        headers['conecta-age-key'] = key_hash
 
         try:
             response = requests.post(f"{self.host}/ti/email", data=body, headers=headers, timeout=10.0)
