@@ -7,6 +7,7 @@ images/
 temp/
 data/
 auth/
+passlib/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
