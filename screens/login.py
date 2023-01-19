@@ -20,6 +20,11 @@ sys.path.insert(1, './config')
 
 import config
 
+from auth.utils_hash import Core
+
+
+core = Core()
+
 
 KV = '''
 <ContentEmail>:
@@ -76,6 +81,9 @@ class LoginScreen(MDScreen):
             user = cl_users.find_one({"_id": self.token['user_id']})
             bearer = encrypter.decrypt_text(self.token['Bearer'], user['data']['bearer']['iv'], user['data']['bearer']['key'])
             headers = {"Authorization": f"Bearer {bearer}"}
+            hash, key = core.do_hash()
+            headers['conecta-age-hash'] = hash
+            headers['conecta-age-key'] = key
             response = requests.get(f"{self.host}/ti/user/{login}", headers=headers, timeout=10.0)
             if int(response.status_code) == 200:
                 return True
@@ -113,6 +121,10 @@ class LoginScreen(MDScreen):
 
             body = json.dumps({"login": login, "password": password})
             headers = {"Content-Type": "application/json"}
+
+            hash, key = core.do_hash()
+            headers['conecta-age-hash'] = hash
+            headers['conecta-age-key'] = key
 
             try:
                 response = requests.post(f"{self.host}/auth/token", data=body, headers=headers, timeout=10.0)
@@ -247,6 +259,10 @@ class LoginScreen(MDScreen):
 
         headers = {"Content-Type": "application/json"}
         headers["Authorization"] = f"Bearer {self.token['Bearer']}"
+        hash, key = core.do_hash()
+        headers['conecta-age-hash'] = hash
+        headers['conecta-age-key'] = key
+
         try:
             response = requests.post(f"{self.host}/ti/email", data=body, headers=headers, timeout=10.0)
         except requests.exceptions.Timeout:

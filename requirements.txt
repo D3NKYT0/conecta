@@ -7,3 +7,4 @@ matplotlib
 pyinstaller
 pycryptodome
 pymongo[srv]
+passlib[bcrypt]

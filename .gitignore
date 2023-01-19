@@ -6,6 +6,7 @@ build/
 images/
 temp/
 data/
+auth/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
