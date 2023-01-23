@@ -108,6 +108,9 @@ class ApiScreen(MDScreen):
         if int(response.status_code) == 422:
             self.ids.response.text = str(response.content)
 
+        if int(response.status_code) == 302:
+            self.ids.response.text = str(response.content)
+
         if int(response.status_code) == 404:
             self.ids.response.text = str(response.content)
 
@@ -143,6 +146,9 @@ class ApiScreen(MDScreen):
             return
 
         if int(response.status_code) == 422:
+            self.ids.response.text = str(response.content)
+
+        if int(response.status_code) == 302:
             self.ids.response.text = str(response.content)
 
         if int(response.status_code) == 404:
@@ -191,6 +197,9 @@ class ApiScreen(MDScreen):
             return
 
         if int(response.status_code) == 422:
+            self.ids.response.text = str(response.content)
+
+        if int(response.status_code) == 302:
             self.ids.response.text = str(response.content)
 
         if int(response.status_code) == 404:
@@ -245,6 +254,9 @@ class ApiScreen(MDScreen):
         if int(response.status_code) == 422:
             self.ids.response.text = str(response.content)
 
+        if int(response.status_code) == 302:
+            self.ids.response.text = str(response.content)
+
         if int(response.status_code) == 404:
             self.ids.response.text = str(response.content)
 
@@ -284,6 +296,9 @@ class ApiScreen(MDScreen):
             return
 
         if int(response.status_code) == 422:
+            self.ids.response.text = str(response.content)
+
+        if int(response.status_code) == 302:
             self.ids.response.text = str(response.content)
 
         if int(response.status_code) == 404:
