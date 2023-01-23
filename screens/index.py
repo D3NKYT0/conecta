@@ -18,7 +18,7 @@ class IndexScreen(MDScreen):
     def __init__(self, app, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.app = app
-        self.token = self.app.token
+        self.token = None
         self.exit_popup = None
         self.is_logged = None
         self.clock = widgets.ClockRealTime(widget=self).start()
@@ -52,6 +52,8 @@ class IndexScreen(MDScreen):
         self.bar.open()
 
     def on_pre_enter(self, *args):
+
+        self.token = self.app.token
 
         x, y = data_utils.MESES, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         second_data = [data_utils.MESES, [2, 1, 3, 4, 6, 5, 7, 8, 10, 9, 12, 11]]
@@ -96,6 +98,10 @@ class IndexScreen(MDScreen):
         self.is_logged = token_data
 
         return super().on_pre_enter(*args)
+
+    def debug(self):
+        App.get_running_app().manager.current = 'api'
+        App.get_running_app().manager.get_screen('api')
 
     def backScreen(self, *args):
 

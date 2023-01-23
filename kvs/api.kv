@@ -1,0 +1,304 @@
+#: import hex kivy.utils.get_color_from_hex
+
+
+<ApiScreen>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'images/backgrounds/wallpaper_index.png'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            id: TOOLBAR
+            padding: 5
+            spacing: 5
+            size_hint_y: 10
+            md_bg_color: hex('#153788')
+            orientation: 'horizontal'
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                size_hint_x: 5
+                padding: 10, 0, 0, 0
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.5
+
+                    Image:
+                        source: "images/logo/logo-toolbar.png"
+                        allow_stretch: True
+                        keep_ratio: True
+                        size_hint_y: None
+                        size_hint_x: None
+                        width: self.parent.width
+                        height: self.parent.width/self.image_ratio
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.5
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                size_hint_x: 5
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.9
+                    spacing: 50
+
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_x: 0.4
+
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_x: 0.5
+
+                        MDLabel:
+                            text: 'TELA DE TESTE DA API'
+                            color: 'white'
+                            bold: True
+                            halign: "center"
+                            font_size: '20sp'
+
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_x: 0.1
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.1
+
+                    MDIconButton:
+                        icon: "images/icons/logoff.png"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        on_release: root.backScreen()
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: 10
+            spacing: 20
+            padding: 20, 20, 20, 0
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                md_bg_color: 0,0,0,0.1
+                size_hint_x: .79
+                spacing: 30
+
+                MDBoxLayout:
+                    size_hint_x: .1
+
+                MDRaisedButton:
+                    text: "ONE"
+                    md_bg_color: "blue"
+                    size_hint_x: .25
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    on_release: root.buttonGetOne()
+
+                MDRaisedButton:
+                    text: "ALL"
+                    md_bg_color: "blue"
+                    size_hint_x: .25
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    on_release: root.buttonGetAll()
+
+                MDRaisedButton:
+                    text: "REGISTER"
+                    md_bg_color: "green"
+                    size_hint_x: .25
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    on_release: root.buttonRegister()
+
+                MDRaisedButton:
+                    text: "UPDATE"
+                    md_bg_color: "orange"
+                    size_hint_x: .25
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    on_release: root.buttonUpdate()
+
+                MDRaisedButton:
+                    text: "DELETE"
+                    md_bg_color: "red"
+                    size_hint_x: .25
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    on_release: root.buttonDelete()
+
+                MDBoxLayout:
+                    size_hint_x: .1
+
+            MDBoxLayout:
+                size_hint_x: .4
+            
+        MDBoxLayout:
+            orientation: 'vertical'
+            size_hint_y: 80
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: 90
+                padding: 20
+                spacing: 20
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_x: 65
+                    spacing: 20
+                    padding: 20
+                    md_bg_color: 0,0,0,0.1
+
+                    MDBoxLayout:
+                        size_hint_y: .1
+                        spacing: 20
+
+                        MDBoxLayout:
+                            size_hint_x: 33
+
+                            MDLabel:
+                                bold: True
+                                color: hex('#153788')
+                                halign: "center"
+                                font_size: '20sp'
+                                text: "Coloque o BODY abaixo"
+
+                        MDBoxLayout:
+                            size_hint_x: 33
+                            md_bg_color: 1,1,1,1
+                            radius: 10
+
+                            MDBoxLayout:
+                                size_hint_x: .1
+
+                            MDDropDownItem:
+                                id: menu_endpoint
+                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                text: 'CHOICE ENDPOINT'
+                                font_size: '20sp'
+                                on_release: root.menu_ep.open()
+
+                            MDBoxLayout:
+                                size_hint_x: .1
+
+                        MDBoxLayout:
+                            size_hint_x: 33
+
+                            MDTextField:
+                                id: field_id
+                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                hint_text: "Coloque o ID aqui"
+                                icon_right: 'lock'
+                                icon_right_color: app.theme_cls.primary_color
+                                write_tab: False
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        size_hint_y: .9
+                        md_bg_color: 1,1,1,0.5
+
+                        MDBoxLayout:
+                            size_hint_y: .5
+
+                            TextInput:
+                                id: field_body
+                                background_color: 0,0,0,0.9
+                                foreground_color: 0.1, 0.9, 0.2, 1
+
+                        MDBoxLayout:
+                            size_hint_y: .5
+
+                            MDLabel:
+                                id: response
+                                bold: True
+                                color: hex('#153788')
+                                halign: "center"
+                                font_size: '20sp'
+                                text: "Escolha sua rota, verifique o BODY ou ID e clique no botão da ação correspondente."
+
+                MDBoxLayout:
+                    size_hint_x: 33
+
+                    Image:
+                        source: "images/back-side.png"
+                        allow_stretch: True
+                        keep_ratio: True
+                        size_hint_y: None
+                        size_hint_x: None
+                        width: self.parent.width
+                        height: self.parent.width/self.image_ratio
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint_y: 10
+                md_bg_color: 0,0,0,1
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: 50
+                    padding: 10
+                    spacing: 10
+                    md_bg_color: 1,1,1,1
+
+                    MDLabel:
+                        id: information
+                        text: 'APLICAÇÃO EM FASE DE DESENVOLVIMENTO...'
+                        color: app.theme_cls.primary_color
+                        bold: True
+                        halign: "center"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        font_size: '20sp'
+
+                MDBoxLayout:
+                    padding: 7
+                    spacing: 10
+                    size_hint_y: 50
+                    md_bg_color: hex('#153788')
+
+                    MDLabel:
+                        id: data
+                        color: "white"
+                        bold: True
+                        halign: "center"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        font_size: '18sp'
+
+                    MDLabel:
+                        id: hora
+                        color: "white"
+                        bold: True
+                        halign: "center"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        font_size: '18sp'
+
+                    MDLabel:
+                        id: user_name
+                        color: "white"
+                        bold: True
+                        halign: "center"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        font_size: '18sp'
+
+                    MDLabel:
+                        id: user
+                        color: 1,1,1,1
+                        bold: True
+                        halign: "center"
+                        font_size: '18sp'
+
+                    MDLabel:
+                        id: ip_address
+                        color: "white"
+                        bold: True
+                        halign: "center"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        font_size: '18sp'
+
+                    MDLabel:
+                        id: machine
+                        color: 1,1,1,1
+                        bold: True
+                        halign: "center"
+                        font_size: '18sp'

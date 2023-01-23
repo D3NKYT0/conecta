@@ -12,9 +12,10 @@ class LiveApp(MDApp, App):
     AUTORELOADER_PATHS = [(".", {"recursive": True}),]
     Window.size = (1280, 720)
 
-    def __init__(self, data_callback, **kwargs):
+    def __init__(self, data_callback, data, **kwargs):
         super().__init__(**kwargs)
         self.data_callback = data_callback
+        self.data = data
         self.CLASSES = self.data_callback["CLASSES"]
         self.KV_FILES = self.data_callback['KV_FILES']
 

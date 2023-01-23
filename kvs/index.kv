@@ -53,6 +53,14 @@
                         orientation: 'horizontal'
                         size_hint_x: 0.5
 
+                        MDTextButton:
+                            text: 'DEGUB'
+                            color: 'white'
+                            bold: True
+                            font_size: '35sp'
+                            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                            on_release: root.debug()
+
                     MDBoxLayout:
                         orientation: 'horizontal'
                         size_hint_x: 0.3

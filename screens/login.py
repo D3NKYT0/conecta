@@ -58,6 +58,7 @@ class LoginScreen(MDScreen):
         self.dialog = None
         self.is_decripted = False
         self.is_logged = False
+        self.is_token_valid = True
 
     def on_pre_leave(self, *args):
         self.is_decripted = False
@@ -91,9 +92,8 @@ class LoginScreen(MDScreen):
                 return False
 
             if int(response.status_code) == 401:
-                cl_tokens = self.app.db.cd("tokens")
-                cl_tokens.delete_one({"_id": login})
-                self.get_message("Token Invalido ou Expirado!", colors['Yellow']['500']) 
+                self.get_message("Token Invalido ou Expirado, tente novamente!", colors['Yellow']['500'])
+                self.is_token_valid = False
                 return False
 
             else:
@@ -153,14 +153,13 @@ class LoginScreen(MDScreen):
                 self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
                 return False, dict()
 
-            if int(response.status_code) in [200]:
+            if int(response.status_code) == 200:
                 data = {"_id": login, "content": content, "is_logged": True}
                 cl_tokens.insert_one(data)
 
-            data['is_logged'] = False  # evitando a vaidação antes da passagem de tela
-            self.is_logged = data
+                data['is_logged'] = False  # evitando a validação antes da passagem de tela
+                self.is_logged = data
 
-            if int(response.status_code) == 200:
                 return True, content
 
             elif int(response.status_code) == 400:
@@ -231,10 +230,13 @@ class LoginScreen(MDScreen):
 
                 self.update_token(user['data']['login']['text'], user['data']['password']['text'], user['data']['bearer']['text'], user['_id'])
 
-            # verificando a disponibilidade do banco de operaçao
+            # verificando a disponibilidade do banco de operaçao (postgresql)
             if not self.db_is_active(loginText):
                 cl_tokens = self.app.db.cd("tokens")
                 cl_tokens.update_one({"_id": loginText}, {"$set": {"is_logged": False}})
+                if not self.is_token_valid:
+                    cl_tokens.delete_one({"_id": loginText})
+                    self.is_token_valid = True
                 return
 
             self.app.username = loginText

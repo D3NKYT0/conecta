@@ -19,6 +19,7 @@ from dev.icon_search import IconApp
 from screens.start import StartScreen  # <-- primeira tela
 from screens.login import LoginScreen  # <-- tela de auth
 from screens.index import IndexScreen  # <-- app inicial
+from screens.api import ApiScreen  # <-- tela de teste
 
 # controle de desenvolvimento
 IS_LIVE = False  # se TRUE liga o app de live caso contrario app normal
@@ -29,13 +30,14 @@ class AgeApp(MDApp):
 
     Window.size = (1280, 720)
 
-    def __init__(self, token, host, **kwargs):
+    def __init__(self, token, host, data, **kwargs):
         super().__init__(**kwargs)
-        self.__version__ = "0.0.10.21"
+        self.__version__ = "0.0.11.10"
         self.token = token
         self.manager = ScreenManager()
         self.DEBUG = False
         self.RAISE_ERROR = False
+        self.data = data
 
         self.db: Database = Database(self)
         self.apihost = host
@@ -57,6 +59,9 @@ class AgeApp(MDApp):
 
         Builder.load_file("kvs/index.kv")
         self.manager.add_widget(IndexScreen(self, name="index"))
+
+        Builder.load_file("kvs/api.kv")
+        self.manager.add_widget(ApiScreen(self, name="api"))
 
         return self.manager
 
@@ -82,10 +87,10 @@ if __name__ == '__main__':
                 os.path.join(os.getcwd(), "dev/manager/screennow.kv"),
             }
         }
-        LiveApp(data_callback=data_debug).run()
+        LiveApp(data_callback=data_debug, data=config.data).run()
 
     elif IS_ICON:
         IconApp().run()
         
     else:
-        AgeApp(token=config.data["token"], host=config.APIHOST).run()
+        AgeApp(token=config.data["token"], host=config.APIHOST, data=config.data).run()
