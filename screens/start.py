@@ -1,7 +1,10 @@
 from kivymd.uix.screen import MDScreen
 from kivy.app import App
 
-# import pyi_splash  # essa importação é referente ao PYINSTALLER (nao precisa ser instalada)
+try:
+    import pyi_splash  # essa importação é referente ao PYINSTALLER (nao precisa ser instalada)
+except:
+    pass
 
 
 class StartScreen(MDScreen):
@@ -10,7 +13,10 @@ class StartScreen(MDScreen):
         super().__init__(*args, **kwargs)
 
     def on_pre_enter(self, *args):
-        # pyi_splash.close()
+        try:
+            pyi_splash.close()
+        except:
+            pass
         return super().on_pre_enter(*args)
 
     def login(self):
