@@ -367,15 +367,16 @@ class LoginScreen(MDScreen):
         code = self.dialog.content_cls.ids.code_field_verify.text
         password = self.dialog.content_cls.ids.password_field_verify.text
         confirm = self.dialog.content_cls.ids.confirm_password_field_verify.text
+        email = self.dialog.content_cls.ids.email_field_verify.text
 
         if len(code) < 1:
-            return self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
+            return self.get_message("Você precisa digitar um codigo!", colors['Yellow']['500'])
 
         if len(password) < 1:
-            return self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
+            return self.get_message("Você precisa digitar uma senha!", colors['Yellow']['500'])
 
         if len(confirm) < 1:
-            return self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
+            return self.get_message("Você precisa confirmar sua senha!", colors['Yellow']['500'])
 
         if self.validation_code != code:
             return self.get_message("Codigo de verificação incorreto!", colors['Yellow']['500'])
@@ -383,13 +384,10 @@ class LoginScreen(MDScreen):
         if password != confirm:
             return self.get_message("As senhas nao conferem!", colors['Yellow']['500'])
 
-        if len(self.dialog.content_cls.ids.email_field_verify.text) == 0:
+        if len(email) == 0:
             return self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
 
-        if "@" not in self.dialog.content_cls.ids.email_field_verify.text:
-            return self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
-            
-        if "." not in self.dialog.content_cls.ids.email_field_verify.text:
+        if "@" not in email and "." not in email:
             return self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
 
         headers = {"Content-Type": "application/json"}
@@ -401,7 +399,7 @@ class LoginScreen(MDScreen):
 
         try:
             user_id = self.user_recovery['id']
-            response = requests.post(f"{self.host}/ti/change_password/{user_id}", data=body, headers=headers, timeout=10.0)
+            response = requests.put(f"{self.host}/ti/change_password/{user_id}", data=body, headers=headers, timeout=10.0)
 
         except requests.exceptions.Timeout:
             self.get_message("Falha na comunicação!", colors['Red']['500'], "#ffffff")
