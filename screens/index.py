@@ -97,6 +97,10 @@ class IndexScreen(MDScreen):
         token_data = cl_tokens.find_one({"_id": login})
         self.is_logged = token_data
 
+        classifier_as = App.get_running_app().user_now_data['classified_as']
+        if int(classifier_as) in [2]:
+            self.ids.debug.text = "DEGUB"
+
         return super().on_pre_enter(*args)
 
     def debug(self):

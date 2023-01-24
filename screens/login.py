@@ -96,8 +96,14 @@ class LoginScreen(MDScreen):
                 self.is_token_valid = False
                 return False
 
-            else:
-                return True
+            App.get_running_app().user_now_data = json.loads(response.content)
+
+            classifier_as = App.get_running_app().user_now_data['classified_as']
+            if int(classifier_as) not in [2, 4, 5, 8]:
+                self.get_message("Sua conta nao tem acesso a esse aplicativo, verifique com o TI!", colors['Yellow']['500'])
+                return False
+            
+            return True
 
         except (requests.exceptions.Timeout, requests.exceptions.ConnectionError):
             self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")

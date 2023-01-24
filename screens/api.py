@@ -223,7 +223,7 @@ class ApiScreen(MDScreen):
             return
 
         try:
-            json_object = json.loads(self.ids.field_body.text)
+            dict_object = json.loads(self.ids.field_body.text)
         except json.decoder.JSONDecodeError:
             self.ids.response.text = "VOCE PRECISA INSERIR O BODY NO FORMATO DE JSON"
             return
@@ -234,10 +234,10 @@ class ApiScreen(MDScreen):
         hash, key_hash = core.do_hash()
         headers['conecta-age-hash'] = hash
         headers['conecta-age-key'] = key_hash
-        body = json.dumps(json_object)
+        json_object = json.dumps(dict_object)
 
         try:    
-            response = requests.put(url_request, data=body, headers=headers, timeout=10.0)
+            response = requests.put(url_request, data=json_object, headers=headers, timeout=10.0)
 
             if int(response.status_code) == 403:
                 self.get_message("Aplicativo Incompativel!", colors['Purple']['500'], "#ffffff") 
