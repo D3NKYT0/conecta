@@ -105,17 +105,20 @@ class ApiScreen(MDScreen):
             self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
             return
 
+        parsed = json.loads(response.content)
+        json_response = f"{json.dumps(parsed, indent=4)}"
+
         if int(response.status_code) == 422:
-            self.ids.response.text = str(response.content)
+            self.ids.response.text = json_response
 
         if int(response.status_code) == 302:
-            self.ids.response.text = str(response.content)
+            self.ids.response.text = json_response
 
         if int(response.status_code) == 404:
-            self.ids.response.text = str(response.content)
+            self.ids.response.text = json_response
 
         if int(response.status_code) == 200:
-            self.ids.response.text = str(response.content)
+            self.ids.response.text = json_response
 
     def buttonGetAll(self):
         
@@ -145,17 +148,20 @@ class ApiScreen(MDScreen):
             self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
             return
 
+        parsed = json.loads(response.content)
+        json_response = f"{json.dumps(parsed, indent=4)}"
+
         if int(response.status_code) == 422:
-            self.ids.response.text = str(response.content)
+            self.ids.response.text = json_response
 
         if int(response.status_code) == 302:
-            self.ids.response.text = str(response.content)
+            self.ids.response.text = json_response
 
         if int(response.status_code) == 404:
-            self.ids.response.text = str(response.content)
+            self.ids.response.text = json_response
 
         if int(response.status_code) == 200:
-            self.ids.response.text = str(response.content)
+            self.ids.response.text = json_response
 
     def buttonRegister(self):
         
@@ -196,17 +202,20 @@ class ApiScreen(MDScreen):
             self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
             return
 
+        parsed = json.loads(response.content)
+        json_response = f"{json.dumps(parsed, indent=4)}"
+
         if int(response.status_code) == 422:
-            self.ids.response.text = str(response.content)
+            self.ids.response.text = json_response
 
         if int(response.status_code) == 302:
-            self.ids.response.text = str(response.content)
+            self.ids.response.text = json_response
 
         if int(response.status_code) == 404:
-            self.ids.response.text = str(response.content)
+            self.ids.response.text = json_response
 
         if int(response.status_code) == 201:
-            self.ids.response.text = str(response.content)
+            self.ids.response.text = json_response
 
     def buttonUpdate(self):
         
@@ -251,17 +260,20 @@ class ApiScreen(MDScreen):
             self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
             return
 
+        parsed = json.loads(response.content)
+        json_response = f"{json.dumps(parsed, indent=4)}"
+
         if int(response.status_code) == 422:
-            self.ids.response.text = str(response.content)
+            self.ids.response.text = json_response
 
         if int(response.status_code) == 302:
-            self.ids.response.text = str(response.content)
+            self.ids.response.text = json_response
 
         if int(response.status_code) == 404:
-            self.ids.response.text = str(response.content)
+            self.ids.response.text = json_response
 
         if int(response.status_code) == 200:
-            self.ids.response.text = str(response.content)
+            self.ids.response.text = json_response
 
     def buttonDelete(self):
         
@@ -295,14 +307,17 @@ class ApiScreen(MDScreen):
             self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
             return
 
+        parsed = json.loads(response.content)
+        json_response = f"{json.dumps(parsed, indent=4)}"
+
         if int(response.status_code) == 422:
-            self.ids.response.text = str(response.content)
+            self.ids.response.text = json_response
 
         if int(response.status_code) == 302:
-            self.ids.response.text = str(response.content)
+            self.ids.response.text = json_response
 
         if int(response.status_code) == 404:
-            self.ids.response.text = str(response.content)
+            self.ids.response.text = json_response
 
         if int(response.status_code) == 200:
-            self.ids.response.text = str(response.content)
+            self.ids.response.text = json_response
