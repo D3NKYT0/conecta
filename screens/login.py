@@ -310,9 +310,10 @@ class LoginScreen(MDScreen):
         hash, key_hash = core.do_hash()
         headers['conecta-age-hash'] = hash
         headers['conecta-age-key'] = key_hash
+        body = json.dumps({"email": email_text})
 
         try:
-            response = requests.get(f"{self.host}/search/{email_text}", headers=headers, timeout=10.0)
+            response = requests.post(f"{self.host}/search", data=body, headers=headers, timeout=10.0)
 
         except requests.exceptions.Timeout:
             self.get_message("Falha na comunicação!", colors['Red']['500'], "#ffffff")
