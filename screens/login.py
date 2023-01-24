@@ -295,14 +295,14 @@ class LoginScreen(MDScreen):
 
     def send_email(self, *args):
 
-        if len(self.dialog.content_cls.ids.email_field_verify.text) == 0:
-            self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
+        if len(self.dialog.content_cls.ids.email_field_verify.text) < 1:
+            return self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
 
         if "@" not in self.dialog.content_cls.ids.email_field_verify.text:
-            self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
+            return self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
 
         if "." not in self.dialog.content_cls.ids.email_field_verify.text:
-            self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
+            return self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
 
         email_text = self.dialog.content_cls.ids.email_field_verify.text
         headers = {"Content-Type": "application/json"}
@@ -325,15 +325,14 @@ class LoginScreen(MDScreen):
             return self.close_dialog()
 
         if int(response.status_code) == 401:
-            self.get_message("Você nao tem autorização para fazer isso!", colors['Red']['500'], "#ffffff")
+            return self.get_message("Você nao tem autorização para fazer isso!", colors['Red']['500'], "#ffffff")
 
         if int(response.status_code) == 500:
             self.get_message("Erro no servidor!", colors['Red']['500'], "#ffffff")
             return self.close_dialog()
 
         if int(response.status_code) != 200:
-            self.get_message("Você precisa digitar um email cadastrado!", colors['Yellow']['500'])
-            return  # encerra o fluxo
+            return self.get_message("Você precisa digitar um email cadastrado!", colors['Yellow']['500'])
 
         hash, key_hash = core.do_hash()
         headers['conecta-age-hash'] = hash
@@ -358,7 +357,7 @@ class LoginScreen(MDScreen):
 
         if int(response.status_code) == 500:
             self.get_message("Erro no servidor!", colors['Red']['500'], "#ffffff")
-            return self.close_dialog()
+            self.close_dialog()
 
         if int(response.status_code) == 202:
             self.get_message("Email enviado com sucesso!", colors['Green']['500'], "#ffffff")
@@ -369,20 +368,29 @@ class LoginScreen(MDScreen):
         password = self.dialog.content_cls.ids.password_field_verify.text
         confirm = self.dialog.content_cls.ids.confirm_password_field_verify.text
 
+        if len(code) < 1:
+            return self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
+
+        if len(password) < 1:
+            return self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
+
+        if len(confirm) < 1:
+            return self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
+
         if self.validation_code != code:
-            self.get_message("Codigo de verificação incorreto!", colors['Yellow']['500'])
+            return self.get_message("Codigo de verificação incorreto!", colors['Yellow']['500'])
 
         if password != confirm:
-            self.get_message("As senhas nao conferem!", colors['Yellow']['500'])
+            return self.get_message("As senhas nao conferem!", colors['Yellow']['500'])
 
         if len(self.dialog.content_cls.ids.email_field_verify.text) == 0:
-            self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
+            return self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
 
         if "@" not in self.dialog.content_cls.ids.email_field_verify.text:
-            self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
-
+            return self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
+            
         if "." not in self.dialog.content_cls.ids.email_field_verify.text:
-            self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
+            return self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
 
         headers = {"Content-Type": "application/json"}
         headers["Authorization"] = f"Bearer {App.get_running_app().system_token}"
@@ -397,22 +405,22 @@ class LoginScreen(MDScreen):
 
         except requests.exceptions.Timeout:
             self.get_message("Falha na comunicação!", colors['Red']['500'], "#ffffff")
-            return self.close_dialog()
+            self.close_dialog()
 
         except requests.exceptions.ConnectionError:
             self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
-            return self.close_dialog()
+            self.close_dialog()
 
         if int(response.status_code) == 401:
             self.get_message("Você nao tem autorização para fazer isso!", colors['Red']['500'], "#ffffff")
 
         if int(response.status_code) == 500:
             self.get_message("Erro no servidor!", colors['Red']['500'], "#ffffff")
-            return self.close_dialog()
+            self.close_dialog()
 
         if int(response.status_code) == 200:
             self.get_message("Senha alterada com sucesso!", colors['Green']['500'], "#ffffff")
-            return self.close_dialog()
+            self.close_dialog()
 
     def show_popup(self):
         if not self.dialog:
