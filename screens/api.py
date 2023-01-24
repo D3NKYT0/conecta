@@ -23,7 +23,7 @@ class ApiScreen(MDScreen):
     def __init__(self, app, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.app = app
-        self.ep = self.app.config.data['endpoints']
+        self.ep = self.app.config_app.data['endpoints']
         self.bar = None
         self.token = None
         self.clock = widgets.ClockRealTime(widget=self).start()

@@ -30,14 +30,14 @@ class AgeApp(MDApp):
 
     Window.size = (1280, 720)
 
-    def __init__(self, token, host, config, **kwargs):
+    def __init__(self, token, host, config_app, **kwargs):
         super().__init__(**kwargs)
         self.__version__ = "0.0.12.2"
         self.token = token
         self.manager = ScreenManager()
         self.DEBUG = False
         self.RAISE_ERROR = False
-        self.config = config
+        self.config_app = config_app
 
         self.db: Database = Database(self)
         self.apihost = host
@@ -93,4 +93,4 @@ if __name__ == '__main__':
         IconApp().run()
         
     else:
-        AgeApp(token=config.data["token"], host=config.APIHOST, config=config).run()
+        AgeApp(token=config.data["token"], host=config.APIHOST, config_app=config).run()

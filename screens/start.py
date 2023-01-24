@@ -22,7 +22,8 @@ class StartScreen(MDScreen):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.system = self.app.config.SYSTEM
+        self.system = App.get_running_app().config_app.SYSTEM
+        self.host = App.get_running_app().apihost
 
     def on_pre_enter(self, *args):
         try:

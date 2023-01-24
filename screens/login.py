@@ -30,12 +30,35 @@ KV = '''
 <ContentEmail>:
     orientation: "vertical"
     size_hint_y: None
-    height: "60dp"
+    height: "250dp"
 
     MDTextField:
         id: email_field_verify
         hint_text: "Email"
         icon_right: 'email'
+        icon_right_color: app.theme_cls.primary_color
+        write_tab: False
+
+    MDTextField:
+        id: code_field_verify
+        hint_text: "Codigo de Verificação"
+        icon_right: 'message-reply-text'
+        icon_right_color: app.theme_cls.primary_color
+        write_tab: False
+
+    MDTextField:
+        id: password_field_verify
+        hint_text: "Nova Senha"
+        password: True
+        icon_right: 'lock'
+        icon_right_color: app.theme_cls.primary_color
+        write_tab: False
+
+    MDTextField:
+        id: confirm_password_field_verify
+        hint_text: "Confirmar Nova Senha"
+        password: True
+        icon_right: 'lock'
         icon_right_color: app.theme_cls.primary_color
         write_tab: False
 '''
@@ -274,68 +297,117 @@ class LoginScreen(MDScreen):
 
         if len(self.dialog.content_cls.ids.email_field_verify.text) == 0:
             self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
-            return self.close_dialog()
 
         if "@" not in self.dialog.content_cls.ids.email_field_verify.text:
             self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
-            return self.close_dialog()
 
         if "." not in self.dialog.content_cls.ids.email_field_verify.text:
             self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
-            return self.close_dialog()
 
+        email_text = self.dialog.content_cls.ids.email_field_verify.text
         headers = {"Content-Type": "application/json"}
         headers["Authorization"] = f"Bearer {App.get_running_app().system_token}"
         hash, key_hash = core.do_hash()
         headers['conecta-age-hash'] = hash
         headers['conecta-age-key'] = key_hash
 
-        new_password = utils.create_code()
-
-        body = json.dumps({"password": new_password})
-
         try:
-            response = requests.post(f"{self.host}/ti/change_password/{self.token['user_id']}", data=body, headers=headers, timeout=10.0)
+            response = requests.get(f"{self.host}/search/{email_text}", headers=headers, timeout=10.0)
+
         except requests.exceptions.Timeout:
             self.get_message("Falha na comunicação!", colors['Red']['500'], "#ffffff")
             return self.close_dialog()
+
         except requests.exceptions.ConnectionError:
             self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
             return self.close_dialog()
 
-        if int(response.status_code) in [401]:
+        if int(response.status_code) == 401:
             self.get_message("Você nao tem autorização para fazer isso!", colors['Red']['500'], "#ffffff")
-            return self.close_dialog()
 
-        if int(response.status_code) in [400, 500]:
+        if int(response.status_code) == 500:
             self.get_message("Erro no servidor!", colors['Red']['500'], "#ffffff")
             return self.close_dialog()
 
-        body = json.dumps({
-            "destination_email": self.dialog.content_cls.ids.email_field_verify.text,
-            "subject": "Sua Nova Senha",
-            "content": new_password
-        })
+        if int(response.status_code) != 200:
+            self.get_message("Você precisa digitar um email cadastrado!", colors['Yellow']['500'])
+
+        hash, key_hash = core.do_hash()
+        headers['conecta-age-hash'] = hash
+        headers['conecta-age-key'] = key_hash
+        self.validation_code = utils.create_code()
+        body = json.dumps({"destination_email": email_text, "subject": "Codigo de Verificação", "content": self.validation_code})
 
         try:
             response = requests.post(f"{self.host}/ti/email", data=body, headers=headers, timeout=10.0)
+
         except requests.exceptions.Timeout:
             self.get_message("Falha na comunicação!", colors['Red']['500'], "#ffffff")
             return self.close_dialog()
+
         except requests.exceptions.ConnectionError:
             self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
             return self.close_dialog()
 
-        if int(response.status_code) in [401]:
+        if int(response.status_code) == 401:
             self.get_message("Você nao tem autorização para fazer isso!", colors['Red']['500'], "#ffffff")
-            return self.close_dialog()
 
-        if int(response.status_code) in [400, 500]:
+        if int(response.status_code) == 500:
             self.get_message("Erro no servidor!", colors['Red']['500'], "#ffffff")
             return self.close_dialog()
 
-        elif int(response.status_code) in [200, 202]:
+        if int(response.status_code) == 200:
             self.get_message("Email enviado com sucesso!", colors['Green']['500'], "#ffffff")
+            return self.close_dialog()
+
+    def change_password(self, *args):
+
+        code = self.dialog.content_cls.ids.code_field_verify.text
+        password = self.dialog.content_cls.ids.password_field_verify.text
+        confirm = self.dialog.content_cls.ids.confirm_password_field_verify.text
+
+        if self.validation_code != code:
+            self.get_message("Codigo de verificação incorreto!", colors['Yellow']['500'])
+
+        if password != confirm:
+            self.get_message("As senhas nao conferem!", colors['Yellow']['500'])
+
+        if len(self.dialog.content_cls.ids.email_field_verify.text) == 0:
+            self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
+
+        if "@" not in self.dialog.content_cls.ids.email_field_verify.text:
+            self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
+
+        if "." not in self.dialog.content_cls.ids.email_field_verify.text:
+            self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
+
+        headers = {"Content-Type": "application/json"}
+        headers["Authorization"] = f"Bearer {App.get_running_app().system_token}"
+        hash, key_hash = core.do_hash()
+        headers['conecta-age-hash'] = hash
+        headers['conecta-age-key'] = key_hash
+        body = json.dumps({"password": password})
+
+        try:
+            response = requests.post(f"{self.host}/ti/change_password/{self.token['user_id']}", data=body, headers=headers, timeout=10.0)
+
+        except requests.exceptions.Timeout:
+            self.get_message("Falha na comunicação!", colors['Red']['500'], "#ffffff")
+            return self.close_dialog()
+
+        except requests.exceptions.ConnectionError:
+            self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
+            return self.close_dialog()
+
+        if int(response.status_code) == 401:
+            self.get_message("Você nao tem autorização para fazer isso!", colors['Red']['500'], "#ffffff")
+
+        if int(response.status_code) == 500:
+            self.get_message("Erro no servidor!", colors['Red']['500'], "#ffffff")
+            return self.close_dialog()
+
+        if int(response.status_code) == 200:
+            self.get_message("Senha alterada com sucesso!", colors['Green']['500'], "#ffffff")
             return self.close_dialog()
 
     def show_popup(self):
@@ -353,13 +425,23 @@ class LoginScreen(MDScreen):
                         on_release=self.close_dialog
                     ),
                     MDFlatButton(
+                        text="ENVIAR CODIGO",
+                        theme_text_color="Custom",
+                        text_color="white",
+                        md_bg_color="green",
+                        on_release=self.send_email
+                    ),
+                    MDFlatButton(
                         text="CONFIRMA",
                         theme_text_color="Custom",
                         text_color="white",
                         md_bg_color=hex('#153788'),
-                        on_release=self.send_email
-                    ),
+                        on_release=self.change_password
+                    )
                 ],
             )
         self.dialog.content_cls.ids.email_field_verify.text = ""
+        self.dialog.content_cls.ids.code_field_verify.text = ""
+        self.dialog.content_cls.ids.password_field_verify.text = ""
+        self.dialog.content_cls.ids.confirm_password_field_verify.text = ""
         self.dialog.open()
