@@ -284,17 +284,38 @@ class LoginScreen(MDScreen):
             self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
             return self.close_dialog()
 
-        body = json.dumps({
-            "destination_email": self.dialog.content_cls.ids.email_field_verify.text,
-            "subject": "Codigo de Autenticação",
-            "content": utils.create_code()
-        })
-
         headers = {"Content-Type": "application/json"}
-        headers["Authorization"] = f"Bearer {self.token['Bearer']}"
+        headers["Authorization"] = f"Bearer {App.get_running_app().system_token}"
         hash, key_hash = core.do_hash()
         headers['conecta-age-hash'] = hash
         headers['conecta-age-key'] = key_hash
+
+        new_password = utils.create_code()
+
+        body = json.dumps({"password": new_password})
+
+        try:
+            response = requests.post(f"{self.host}/ti/change_password/{self.token['user_id']}", data=body, headers=headers, timeout=10.0)
+        except requests.exceptions.Timeout:
+            self.get_message("Falha na comunicação!", colors['Red']['500'], "#ffffff")
+            return self.close_dialog()
+        except requests.exceptions.ConnectionError:
+            self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
+            return self.close_dialog()
+
+        if int(response.status_code) in [401]:
+            self.get_message("Você nao tem autorização para fazer isso!", colors['Red']['500'], "#ffffff")
+            return self.close_dialog()
+
+        if int(response.status_code) in [400, 500]:
+            self.get_message("Erro no servidor!", colors['Red']['500'], "#ffffff")
+            return self.close_dialog()
+
+        body = json.dumps({
+            "destination_email": self.dialog.content_cls.ids.email_field_verify.text,
+            "subject": "Sua Nova Senha",
+            "content": new_password
+        })
 
         try:
             response = requests.post(f"{self.host}/ti/email", data=body, headers=headers, timeout=10.0)
@@ -302,8 +323,8 @@ class LoginScreen(MDScreen):
             self.get_message("Falha na comunicação!", colors['Red']['500'], "#ffffff")
             return self.close_dialog()
         except requests.exceptions.ConnectionError:
-                self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
-                return False, dict()
+            self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
+            return self.close_dialog()
 
         if int(response.status_code) in [401]:
             self.get_message("Você nao tem autorização para fazer isso!", colors['Red']['500'], "#ffffff")
