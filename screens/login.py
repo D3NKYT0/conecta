@@ -332,6 +332,7 @@ class LoginScreen(MDScreen):
 
         if int(response.status_code) != 200:
             self.get_message("Você precisa digitar um email cadastrado!", colors['Yellow']['500'])
+            return  # encerra o fluxo
 
         hash, key_hash = core.do_hash()
         headers['conecta-age-hash'] = hash
@@ -357,7 +358,7 @@ class LoginScreen(MDScreen):
             self.get_message("Erro no servidor!", colors['Red']['500'], "#ffffff")
             return self.close_dialog()
 
-        if int(response.status_code) == 200:
+        if int(response.status_code) == 202:
             self.get_message("Email enviado com sucesso!", colors['Green']['500'], "#ffffff")
             return self.close_dialog()
 
