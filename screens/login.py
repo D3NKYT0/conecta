@@ -314,6 +314,7 @@ class LoginScreen(MDScreen):
 
         try:
             response = requests.post(f"{self.host}/ti/search", data=body, headers=headers, timeout=10.0)
+            content = json.loads(response.content)
 
         except requests.exceptions.Timeout:
             self.get_message("Falha na comunicação!", colors['Red']['500'], "#ffffff")
@@ -338,6 +339,7 @@ class LoginScreen(MDScreen):
         headers['conecta-age-hash'] = hash
         headers['conecta-age-key'] = key_hash
         self.validation_code = utils.create_code()
+        self.user_recovery = content
         body = json.dumps({"destination_email": email_text, "subject": "Codigo de Verificação", "content": self.validation_code})
 
         try:
@@ -360,7 +362,6 @@ class LoginScreen(MDScreen):
 
         if int(response.status_code) == 202:
             self.get_message("Email enviado com sucesso!", colors['Green']['500'], "#ffffff")
-            return self.close_dialog()
 
     def change_password(self, *args):
 
@@ -391,7 +392,8 @@ class LoginScreen(MDScreen):
         body = json.dumps({"password": password})
 
         try:
-            response = requests.post(f"{self.host}/ti/change_password/{self.token['user_id']}", data=body, headers=headers, timeout=10.0)
+            user_id = self.user_recovery['id']
+            response = requests.post(f"{self.host}/ti/change_password/{user_id}", data=body, headers=headers, timeout=10.0)
 
         except requests.exceptions.Timeout:
             self.get_message("Falha na comunicação!", colors['Red']['500'], "#ffffff")
