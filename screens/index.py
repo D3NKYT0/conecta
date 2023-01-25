@@ -100,12 +100,16 @@ class IndexScreen(MDScreen):
         classifier_as = App.get_running_app().user_now_data['classified_as']
         if int(classifier_as) in [2]:
             self.ids.debug.text = "DEGUB"
+        else:
+            self.ids.debug.text = ""
 
         return super().on_pre_enter(*args)
 
     def debug(self):
-        App.get_running_app().manager.current = 'api'
-        App.get_running_app().manager.get_screen('api')
+        classifier_as = App.get_running_app().user_now_data['classified_as']
+        if int(classifier_as) in [2]:
+            App.get_running_app().manager.current = 'api'
+            App.get_running_app().manager.get_screen('api')
 
     def backScreen(self, *args):
         if self.is_logged is not None:
