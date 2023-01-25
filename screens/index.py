@@ -108,17 +108,14 @@ class IndexScreen(MDScreen):
         App.get_running_app().manager.get_screen('api')
 
     def backScreen(self, *args):
-
         if self.is_logged is not None:
+            self.is_logged = None
             cl_tokens = self.app.db.cd("tokens")
-            token_data = cl_tokens.find_one({"_id": self.is_logged['_id']})
-            if token_data is not None:
-                cl_tokens.update_one({"_id": self.is_logged['_id']}, {"$set": {"is_logged": False}})
-                self.is_logged = None
-
+            cl_users = self.app.db.cd("users")
+            cl_tokens.delete_one({"_id": self.app.username})
+            cl_users.delete_one({"_id": self.app.USER_LOGGED["id"]})
             App.get_running_app().manager.current = 'login'
             App.get_running_app().manager.get_screen('login')
-
         self.close_exit_popup()
 
     def close_exit_popup(self, *args):

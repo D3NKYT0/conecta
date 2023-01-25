@@ -8,6 +8,9 @@ from kivy.core.window import Window
 from kivy.properties import StringProperty
 from kivy.uix.screenmanager import ScreenManager
 
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.button import MDFlatButton
+
 # banco de dados (mongodb)
 from resources.database import Database
 
@@ -29,15 +32,19 @@ IS_ICON = False  # se TRUE liga o app de icons caso contrario app normal
 class AgeApp(MDApp):
 
     Window.size = (1280, 720)
+    title = 'Conecta Age'
+    icon = 'images/icons/app.png'
 
     def __init__(self, token, host, config_app, **kwargs):
         super().__init__(**kwargs)
-        self.__version__ = "0.0.12.12"
+        self.__version__ = "0.0.13.1"
         self.token = token
         self.manager = ScreenManager()
         self.DEBUG = False
         self.RAISE_ERROR = False
         self.config_app = config_app
+        self.exit_popup = None
+        self.USER_LOGGED = None
 
         self.db: Database = Database(self)
         self.apihost = host
@@ -46,6 +53,9 @@ class AgeApp(MDApp):
         self.password = StringProperty(None)
 
     def build(self):
+
+        Window.bind(on_request_close=self.exit_app_x)
+        Window.bind(on_keyboard=self.exit_app_esc)
 
         self.theme_cls.primary_palette = "Blue"
         self.theme_cls.primary_hue = "500"
@@ -64,6 +74,50 @@ class AgeApp(MDApp):
         self.manager.add_widget(ApiScreen(self, name="api"))
 
         return self.manager
+
+    def exit_app_esc(self, window, key, *args):
+        if key == 27:
+            self.on_popup_close()
+            return True
+
+    def exit_app_x(self, *args):
+        self.on_popup_close()
+        return True
+
+    def on_popup_close(self, *args):
+        if not self.exit_popup:
+            self.exit_popup = MDDialog(
+                title='Sair do ConectaAge',
+                text="Deseja mesmo sair?",
+                buttons=[
+                    MDFlatButton(
+                        text="CANCELA",
+                        theme_text_color="Custom",
+                        text_color="white",
+                        md_bg_color="red",
+                        on_press=lambda x: self.close_exit_dialog()
+                    ),
+                    MDFlatButton(
+                        text="CONFIRMA",
+                        theme_text_color="Custom",
+                        text_color="white",
+                        md_bg_color='#153788',
+                        on_press=lambda x: self.close_app_confirm()
+                    )
+                ],
+            )
+        self.exit_popup.open()
+
+    def close_app_confirm(self, *largs):
+        if self.USER_LOGGED:
+            cl_tokens = self.db.cd("tokens")
+            cl_users = self.db.cd("users")
+            cl_tokens.delete_one({"_id": self.username})
+            cl_users.delete_one({"_id": self.USER_LOGGED["id"]})
+        super(AgeApp, self).stop(*largs)
+
+    def close_exit_dialog(self, *args):
+        self.exit_popup.dismiss()
 
     def get_application_config(self) -> object:
         if not self.username:

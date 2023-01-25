@@ -263,8 +263,12 @@ class LoginScreen(MDScreen):
             if not self.db_is_active(loginText):
                 cl_tokens = self.app.db.cd("tokens")
                 cl_tokens.update_one({"_id": loginText}, {"$set": {"is_logged": False}})
+
                 if not self.is_token_valid:
+                    user_id = str(response[1]['user']['id'])
+                    cl_users = self.app.db.cd("users")
                     cl_tokens.delete_one({"_id": loginText})
+                    cl_users.delete_one({"_id": user_id})
                     self.is_token_valid = True
                 return
 
@@ -291,6 +295,7 @@ class LoginScreen(MDScreen):
         self.bar.open()
 
     def close_dialog(self, *args):
+        self.dialog.buttons[1].disabled = False
         self.dialog.dismiss()
 
     def send_email(self, *args):
@@ -361,6 +366,7 @@ class LoginScreen(MDScreen):
 
         if int(response.status_code) == 202:
             self.get_message("Email enviado com sucesso!", colors['Green']['500'], "#ffffff")
+            self.dialog.buttons[1].disabled = True
 
     def change_password(self, *args):
 
@@ -418,6 +424,7 @@ class LoginScreen(MDScreen):
 
         if int(response.status_code) == 200:
             self.get_message("Senha alterada com sucesso!", colors['Green']['500'], "#ffffff")
+            self.dialog.buttons[1].disabled = False
             self.close_dialog()
 
     def show_popup(self):
@@ -454,4 +461,5 @@ class LoginScreen(MDScreen):
         self.dialog.content_cls.ids.code_field_verify.text = ""
         self.dialog.content_cls.ids.password_field_verify.text = ""
         self.dialog.content_cls.ids.confirm_password_field_verify.text = ""
+        self.dialog.buttons[1].disabled = False
         self.dialog.open()
