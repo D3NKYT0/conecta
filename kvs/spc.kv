@@ -1,0 +1,232 @@
+#: import hex kivy.utils.get_color_from_hex
+
+
+<SpcScreen>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'images/backgrounds/wallpaper_spc.jpg'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            id: TOOLBAR
+            padding: 5
+            spacing: 5
+            size_hint_y: 10
+            md_bg_color: hex('#153788')
+            orientation: 'horizontal'
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                size_hint_x: 5
+                padding: 10, 0, 0, 0
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.5
+
+                    Image:
+                        source: "images/logo/logo-toolbar.png"
+                        allow_stretch: True
+                        keep_ratio: True
+                        size_hint_y: None
+                        size_hint_x: None
+                        width: self.parent.width
+                        height: self.parent.width/self.image_ratio
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.5
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                size_hint_x: 5
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.9
+                    spacing: 50
+
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_x: 0.5
+
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_x: 0.3
+
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_x: 0.2
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.1
+
+                    MDIconButton:
+                        icon: "arrow-left"
+                        theme_icon_color: "Custom"
+                        icon_color: "white"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        on_release: root.backScreen()
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: 10
+            spacing: 20
+            padding: 20, 20, 20, 0
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                size_hint_x: .79
+                radius: 10
+                # md_bg_color: 1,1,1,0.7
+                spacing: 30
+
+                MDBoxLayout:
+                    size_hint_x: .1
+
+                MDRaisedButton:
+                    text: "ATUALIZAR"
+                    md_bg_color: "green"
+                    size_hint_x: .25
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    on_release: root.updateButton()
+
+                MDRaisedButton:
+                    text: "CONSULTAR"
+                    md_bg_color: "orange"
+                    size_hint_x: .25
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    on_release: root.consultaButton()
+
+                MDRaisedButton:
+                    text: "RESPONDER"
+                    md_bg_color: "blue"
+                    size_hint_x: .25
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    on_release: root.reponseButton()
+
+                MDBoxLayout:
+                    size_hint_x: .1
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                size_hint_x: .4
+                radius: 10
+                # md_bg_color: 1,1,1,0.7
+
+                MDBoxLayout:
+                    size_hint_x: .15
+
+                MDRaisedButton:
+                    text: "BAIXAR"
+                    md_bg_color: "red"
+                    size_hint_x: .25
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    on_release: root.downloadButton()
+
+                MDBoxLayout:
+                    size_hint_x: .15
+            
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            size_hint_y: 80
+            
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: 90
+                padding: 20
+                spacing: 20
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 65
+                    spacing: 20
+
+                    MDAnchorLayout:
+                        id: data_box
+
+                MDBoxLayout:
+                    size_hint_x: 33
+
+                    MDAnchorLayout:
+                        id: data_response
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint_y: 10
+                md_bg_color: 0,0,0,1
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: 50
+                    padding: 10
+                    spacing: 10
+                    md_bg_color: 1,1,1,1
+
+                    MDLabel:
+                        id: information
+                        text: 'APLICAÇÃO EM FASE DE DESENVOLVIMENTO...'
+                        color: app.theme_cls.primary_color
+                        bold: True
+                        halign: "center"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        font_size: '20sp'
+
+                MDBoxLayout:
+                    padding: 7
+                    spacing: 10
+                    size_hint_y: 50
+                    md_bg_color: hex('#153788')
+
+                    MDLabel:
+                        id: data
+                        color: "white"
+                        bold: True
+                        halign: "center"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        font_size: '18sp'
+
+                    MDLabel:
+                        id: hora
+                        color: "white"
+                        bold: True
+                        halign: "center"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        font_size: '18sp'
+
+                    MDLabel:
+                        id: user_name
+                        color: "white"
+                        bold: True
+                        halign: "center"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        font_size: '18sp'
+
+                    MDLabel:
+                        id: user
+                        color: 1,1,1,1
+                        bold: True
+                        halign: "center"
+                        font_size: '18sp'
+
+                    MDLabel:
+                        id: ip_address
+                        color: "white"
+                        bold: True
+                        halign: "center"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        font_size: '18sp'
+
+                    MDLabel:
+                        id: machine
+                        color: 1,1,1,1
+                        bold: True
+                        halign: "center"
+                        font_size: '18sp'

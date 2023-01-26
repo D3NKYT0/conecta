@@ -22,6 +22,7 @@ from dev.icon_search import IconApp
 from screens.start import StartScreen  # <-- primeira tela
 from screens.login import LoginScreen  # <-- tela de auth
 from screens.index import IndexScreen  # <-- app inicial
+from screens.spc import SpcScreen  # <-- tela do spc
 from screens.api import ApiScreen  # <-- tela de teste
 
 # controle de desenvolvimento
@@ -35,20 +36,21 @@ class AgeApp(MDApp):
     title = 'Conecta Age'
     icon = 'images/icons/app.png'
 
-    def __init__(self, token, host, config_app, **kwargs):
+    def __init__(self, config_app, **kwargs):
         super().__init__(**kwargs)
-        self.__version__ = "0.0.13.1"
-        self.token = token
-        self.manager = ScreenManager()
+        self.__version__ = "0.0.14.1"
+        self.config_app = config_app
+        self.token = self.config_app.data["token"]
+        self.apihost = self.config_app.APIHOST
+        
         self.DEBUG = False
         self.RAISE_ERROR = False
-        self.config_app = config_app
-        self.exit_popup = None
+        self.EXIT_POPUP = None
         self.USER_LOGGED = None
 
+        self.manager = ScreenManager()
         self.db: Database = Database(self)
-        self.apihost = host
-
+        
         self.username = StringProperty(None)
         self.password = StringProperty(None)
 
@@ -73,6 +75,9 @@ class AgeApp(MDApp):
         Builder.load_file("kvs/api.kv")
         self.manager.add_widget(ApiScreen(self, name="api"))
 
+        Builder.load_file("kvs/spc.kv")
+        self.manager.add_widget(SpcScreen(self, name="spc"))
+
         return self.manager
 
     def exit_app_esc(self, window, key, *args):
@@ -85,8 +90,8 @@ class AgeApp(MDApp):
         return True
 
     def on_popup_close(self, *args):
-        if not self.exit_popup:
-            self.exit_popup = MDDialog(
+        if not self.EXIT_POPUP:
+            self.EXIT_POPUP = MDDialog(
                 title='Sair do ConectaAge',
                 text="Deseja mesmo sair?",
                 buttons=[
@@ -106,7 +111,7 @@ class AgeApp(MDApp):
                     )
                 ],
             )
-        self.exit_popup.open()
+        self.EXIT_POPUP.open()
 
     def close_app_confirm(self, *largs):
         if self.USER_LOGGED:
@@ -117,7 +122,7 @@ class AgeApp(MDApp):
         super(AgeApp, self).stop(*largs)
 
     def close_exit_dialog(self, *args):
-        self.exit_popup.dismiss()
+        self.EXIT_POPUP.dismiss()
 
     def get_application_config(self) -> object:
         if not self.username:
@@ -147,4 +152,4 @@ if __name__ == '__main__':
         IconApp().run()
         
     else:
-        AgeApp(token=config.data["token"], host=config.APIHOST, config_app=config).run()
+        AgeApp(config_app=config).run()
