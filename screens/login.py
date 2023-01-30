@@ -24,6 +24,7 @@ from auth.utils_hash import Core
 
 
 core = Core()
+FOR_TEST = False  # Default: False
 
 
 KV = '''
@@ -204,6 +205,11 @@ class LoginScreen(MDScreen):
                 return False, content
 
         elif token_data['is_logged']:
+
+            if FOR_TEST:
+                self.is_logged['is_logged'] = False
+                return True, token_data['content']
+                
             self.get_message("Você já esta logado em outro terminal!", colors['Red']['500'], "#ffffff")
             return False, token_data['content']
 
