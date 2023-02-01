@@ -1,29 +1,26 @@
 import os
 import config
 
-from kivymd.app import MDApp
-
 from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.properties import StringProperty
 from kivy.uix.screenmanager import ScreenManager
+from kivy.animation import Animation
 
+from kivymd.app import MDApp
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
 
-# banco de dados (mongodb)
-from resources.database import Database
-
-# app pra dev
 from debug import LiveApp
 from dev.icon_search import IconApp
+from resources.database import Database
 
 # screens
-from screens.start import StartScreen  # <-- primeira tela
-from screens.login import LoginScreen  # <-- tela de auth
-from screens.index import IndexScreen  # <-- app inicial
-from screens.spc import SpcScreen  # <-- tela do spc
-from screens.api import ApiScreen  # <-- tela de teste
+from screens.start import StartScreen
+from screens.login import LoginScreen
+from screens.index import IndexScreen
+from screens.spc import SpcScreen
+from screens.api import ApiScreen
 
 # controle de desenvolvimento
 IS_LIVE = False  # se TRUE liga o app de live caso contrario app normal
@@ -38,7 +35,7 @@ class AgeApp(MDApp):
 
     def __init__(self, config_app, **kwargs):
         super().__init__(**kwargs)
-        self.__version__ = "0.0.15.1"
+        self.__version__ = "0.0.18.x"
         self.config_app = config_app
         self.token = self.config_app.data["token"]
         self.apihost = self.config_app.APIHOST
@@ -53,6 +50,19 @@ class AgeApp(MDApp):
         
         self.username = StringProperty(None)
         self.password = StringProperty(None)
+
+    def restart_animation(self, *args):
+        self.instance_animation.x = 850
+        self.animation = Animation(x=-850, duration=12)
+        self.animation.bind(on_complete=self.restart_animation)
+        self.animation.start(self.instance_animation)
+
+    def animate(self, instance):
+        self.instance_animation = instance
+        self.instance_animation.x = 850
+        self.animation = Animation(x=-850, duration=12)
+        self.animation.bind(on_complete=self.restart_animation)
+        self.animation.start(self.instance_animation)
 
     def build(self):
 

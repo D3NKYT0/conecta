@@ -137,15 +137,20 @@ class LoginScreen(MDScreen):
 
         cl_users = self.app.db.cd("users")
         user = cl_users.find_one({"_id": user_id})
+        
         if user is None:
             self.token = {"Bearer": "", "is_active": False, "login": "", "password": "", "user_id": ""}
             return 
 
-        login = encrypter.decrypt_text(self.token['login'], user['data']['login']['iv'], user['data']['login']['key'])
-        password = encrypter.decrypt_text(self.token['password'], user['data']['password']['iv'], user['data']['password']['key'])
-        bearer = encrypter.decrypt_text(self.token['Bearer'], user['data']['bearer']['iv'], user['data']['bearer']['key'])
+        try:
+            login = encrypter.decrypt_text(self.token['login'], user['data']['login']['iv'], user['data']['login']['key'])
+            password = encrypter.decrypt_text(self.token['password'], user['data']['password']['iv'], user['data']['password']['key'])
+            bearer = encrypter.decrypt_text(self.token['Bearer'], user['data']['bearer']['iv'], user['data']['bearer']['key'])
+            self.token = {"Bearer": bearer, "is_active": True, "login": login, "password": password, "user_id": user_id}
 
-        self.token = {"Bearer": bearer, "is_active": True, "login": login, "password": password, "user_id": user_id}
+        except ValueError:
+            self.token = {"Bearer": "", "is_active": False, "login": "", "password": "", "user_id": ""}
+            return 
 
     def enter(self, email, password):
         if len(email) > 0 and len(password) > 0:

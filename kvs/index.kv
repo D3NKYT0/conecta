@@ -38,7 +38,11 @@
 
                 MDBoxLayout:
                     orientation: 'horizontal'
-                    size_hint_x: 0.5
+                    size_hint_x: 0.1
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.6
 
             MDBoxLayout:
                 orientation: 'horizontal'
@@ -51,37 +55,28 @@
 
                     MDBoxLayout:
                         orientation: 'horizontal'
-                        size_hint_x: 0.5
-
-                        MDTextButton:
-                            id: debug
-                            color: 'white'
-                            bold: True
-                            font_size: '35sp'
-                            pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                            on_release: root.debug()
+                        size_hint_x: 0.4
 
                     MDBoxLayout:
                         orientation: 'horizontal'
-                        size_hint_x: 0.3
+                        size_hint_x: 0.6
+                        spacing: 5
 
-                        MDTextButton:
-                            text: 'INSCRITOS'
-                            color: 'white'
-                            bold: True
-                            font_size: '35sp'
+                        MDRaisedButton:
+                            text: "CADASTRADOS"
+                            md_bg_color: "white"
+                            theme_text_color: "Custom"
+                            text_color: hex('#153788')
+                            size_hint_x: .25
                             pos_hint: {"center_x": 0.5, "center_y": 0.5}
                             on_release: root.getInscritosScreen()
 
-                    MDBoxLayout:
-                        orientation: 'horizontal'
-                        size_hint_x: 0.2
-
-                        MDTextButton:
-                            text: 'SPC'
-                            color: 'white'
-                            bold: True
-                            font_size: '35sp'
+                        MDRaisedButton:
+                            text: "SPC"
+                            md_bg_color: "white"
+                            theme_text_color: "Custom"
+                            text_color: hex('#153788')
+                            size_hint_x: .25
                             pos_hint: {"center_x": 0.5, "center_y": 0.5}
                             on_release: root.getSpcScreen()
 
@@ -97,12 +92,31 @@
         MDBoxLayout:
             orientation: 'horizontal'
             size_hint_y: 10
-            
+            padding: 20
+            spacing: 20
+
+            MDBoxLayout:
+                size_hint_x: 65
+
+            MDBoxLayout:
+                id: box_debug
+                size_hint_x: 33
+                orientation: 'horizontal'
+
+                MDBoxLayout:
+                    size_hint_x: .9
+
+                MDIconButton:
+                    id: debugBT
+                    size_hint_x: .1
+                    icon: "images/icons/debug.png"
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    icon_size: dp(48)
+                    on_release: root.debug()
 
         MDBoxLayout:
             orientation: 'vertical'
             size_hint_y: 80
-            
 
             MDBoxLayout:
                 orientation: 'horizontal'

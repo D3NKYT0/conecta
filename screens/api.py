@@ -67,6 +67,8 @@ class ApiScreen(MDScreen):
         self.menu_ep = MDDropdownMenu(items=self.menu_items, width_mult=4, caller=self.ids.menu_endpoint)
         self.menu_ep.bind()
 
+        App.get_running_app().animate(self.ids.information)
+
         return super().on_pre_enter(*args)
 
     def backScreen(self, *args):

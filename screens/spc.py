@@ -1,18 +1,15 @@
-from kivymd.uix.screen import MDScreen
-
 from kivy.app import App
+from kivy.metrics import dp
 
+from kivymd.uix.screen import MDScreen
 from kivymd.uix.datatables import MDDataTable
 from kivymd.uix.datatables.datatables import CellRow
-from random import choice, randint
 from kivymd.uix.snackbar import MDSnackbar
 from kivymd.uix.label import MDLabel
 from kivymd.color_definitions import colors
 
 from resources import widgets, utils
-
-from kivy.metrics import dp
-
+from random import choice, randint
 from copy import deepcopy
 
 
@@ -89,6 +86,13 @@ class SpcScreen(MDScreen):
         self.ids.data_response.add_widget(self.tb_response)
         self.rd_tb = list()
 
+    def on_pre_leave(self, *args):
+
+        self.restart_data_table_rp()
+        self.restart_data_table_tb()
+
+        return super().on_pre_leave(*args)
+
     def on_pre_enter(self, *args):
 
         self.token = App.get_running_app().token
@@ -103,42 +107,15 @@ class SpcScreen(MDScreen):
         self.ids.user_name.text = str(self.user['name']).upper()
         self.ids.ip_address.text = str(self.hardware['ip-address'])
 
-        self.table = MDDataTable(
-            use_pagination=True,
-            check=True,
-            rows_num=10,
-            column_data=[
-                ("ID", dp(20)),
-                ("Status", dp(30)),
-                ("Nome", dp(50)),
-                ("CPF", dp(30)),
-                ("Municipio", dp(30)),
-                ("Agente", dp(30)),
-                ("cadastrado em", dp(30)),
-            ]
-        )
-        self.table.bind(on_check_press=self.on_check_press_tb)
-        self.table.bind(on_row_press=self.on_row_press_tb)
-        self.ids.data_box.add_widget(self.table)
+        self.updateButton()
+        self.restart_data_table_rp()
 
-        self.tb_response = MDDataTable(
-            use_pagination=True,
-            check=True,
-            rows_num=10,
-            column_data=[
-                ("ID", dp(20)),
-                ("Status", dp(30)),
-                ("Nome", dp(50)),
-                ("CPF", dp(30))
-            ]
-        )
-        self.tb_response.bind(on_check_press=self.on_check_press_rp)
-        self.tb_response.bind(on_row_press=self.on_row_press_rp)
-        self.ids.data_response.add_widget(self.tb_response)
+        App.get_running_app().animate(self.ids.information)
+
         return super().on_pre_enter(*args)
 
     def updateButton(self):
-        self.table.row_data = list()
+        self.restart_data_table_tb()
 
         # --------------------------------
         # pegar dados do banco
@@ -154,8 +131,6 @@ class SpcScreen(MDScreen):
             _id += 1
             self.add_row_data_table(row_now)
 
-        self.get_message("Atualização feita com sucesso!", colors['Green']['500'], "#ffffff")
-
     def consultaButton(self):
         rows_checks = self.rd_tb
 
@@ -164,7 +139,6 @@ class SpcScreen(MDScreen):
 
         for row in rows_checks:
             if row[1].lower() == "responder":
-                print(row)
                 return self.get_message("Você já consultou essa solicitação!", colors['Yellow']['500'])
 
         # --------------------------------
@@ -180,7 +154,7 @@ class SpcScreen(MDScreen):
             _id += 1
             self.add_row_data_response(row_now)
 
-        self.restart_data_table_tb()
+        self.updateButton()
 
         self.get_message("Consulta feita com sucesso!", colors['Green']['500'], "#ffffff")
 
@@ -198,7 +172,7 @@ class SpcScreen(MDScreen):
         # atualizar as solicitações no banco
         # --------------------------------
 
-        self.restart_data_table_tb()
+        self.updateButton()
 
         self.get_message("Resposta feita com sucesso!", colors['Green']['500'], "#ffffff")
 

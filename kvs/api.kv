@@ -6,7 +6,7 @@
         Rectangle:
             pos: self.pos
             size: self.size
-            source: 'images/backgrounds/wallpaper_index.png'
+            source: 'images/backgrounds/wallpaper_api.png'
 
     MDBoxLayout:
         orientation: 'vertical'
@@ -36,6 +36,14 @@
                         size_hint_x: None
                         width: self.parent.width
                         height: self.parent.width/self.image_ratio
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.1
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.6
 
                 MDBoxLayout:
                     orientation: 'horizontal'
@@ -219,7 +227,7 @@
                     size_hint_x: 33
 
                     Image:
-                        source: "images/back-side.png"
+                        source: "images/side-api.png"
                         allow_stretch: True
                         keep_ratio: True
                         size_hint_y: None

@@ -98,10 +98,10 @@ class IndexScreen(MDScreen):
         self.is_logged = token_data
 
         classifier_as = App.get_running_app().user_now_data['classified_as']
-        if int(classifier_as) in [2]:
-            self.ids.debug.text = "DEGUB"
-        else:
-            self.ids.debug.text = ""
+        if int(classifier_as) not in [2]:
+            self.ids.box_debug.remove_widget(self.ids.debugBT)
+
+        self.app.animate(self.ids.information)
 
         return super().on_pre_enter(*args)
 
