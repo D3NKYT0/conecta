@@ -1,5 +1,6 @@
 import os
 import config
+import geocoder
 
 from kivy.lang import Builder
 from kivy.core.window import Window
@@ -14,6 +15,7 @@ from kivymd.uix.button import MDFlatButton
 from debug import LiveApp
 from dev.icon_search import IconApp
 from resources.database import Database
+from resources.utils import get_week_day
 
 # screens
 from screens.start import StartScreen
@@ -25,6 +27,7 @@ from screens.api import ApiScreen
 # controle de desenvolvimento
 IS_LIVE = False  # se TRUE liga o app de live caso contrario app normal
 IS_ICON = False  # se TRUE liga o app de icons caso contrario app normal
+geoLocalization = geocoder.ip('me')
 
 
 class AgeApp(MDApp):
@@ -51,18 +54,17 @@ class AgeApp(MDApp):
         self.username = StringProperty(None)
         self.password = StringProperty(None)
 
-    def restart_animation(self, *args):
-        self.instance_animation.x = 850
-        self.animation = Animation(x=-850, duration=12)
-        self.animation.bind(on_complete=self.restart_animation)
-        self.animation.start(self.instance_animation)
+    def after_animation(self, *args):
+        self.instance.text = f"{get_week_day()}, {geoLocalization.address} - Versão do Aplicativo: {self.__version__}"
+        self.instance.x = 0
 
     def animate(self, instance):
-        self.instance_animation = instance
-        self.instance_animation.x = 850
-        self.animation = Animation(x=-850, duration=12)
-        self.animation.bind(on_complete=self.restart_animation)
-        self.animation.start(self.instance_animation)
+        # instance.text = ""
+        instance.x = 900
+        self.instance = instance
+        self.animation = Animation(x=-900, duration=20)
+        self.animation.bind(on_complete=self.after_animation)
+        self.animation.start(self.instance)
 
     def build(self):
 

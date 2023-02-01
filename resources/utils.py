@@ -7,6 +7,7 @@ import psutil
 import logging
 
 import matplotlib.pyplot as plt
+from datetime import date
 
 
 def base36encode(number):
@@ -93,3 +94,9 @@ def format_num(num, f=False):
         c = b.replace('.', ',')
         d = c.replace('v', '.')
         return f'{d}'
+
+
+def get_week_day():
+    num = date.today().weekday()
+    sem = ("Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo")
+    return f"{sem[num]}-feira" if num < 5 else f"{sem[num]}"

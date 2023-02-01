@@ -99,7 +99,10 @@ class IndexScreen(MDScreen):
 
         classifier_as = App.get_running_app().user_now_data['classified_as']
         if int(classifier_as) not in [2]:
-            self.ids.box_debug.remove_widget(self.ids.debugBT)
+            try:
+                self.ids.box_debug.remove_widget(self.ids.debugBT)
+            except ReferenceError:
+                pass
 
         self.app.animate(self.ids.information)
 
