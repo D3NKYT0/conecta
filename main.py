@@ -55,17 +55,17 @@ class AgeApp(MDApp):
         self.username = StringProperty(None)
         self.password = StringProperty(None)
 
-    def after_animation(self, *args):
-        self.instance.text = f"{get_week_day()}, {geoLocalization.address} - Versão do Aplicativo: {self.__version__}"
-        self.instance.x = 0
+    def after_animation(self, animation, widget):
+        animation.stop(widget)
+        widget.text = f"{get_week_day()}, {geoLocalization.address} - Versão do Aplicativo: {self.__version__}"
+        widget.x = 0
 
     def animate(self, instance):
         instance.text = random.choice(config.ping_msgs)
         instance.x = 900
-        self.instance = instance
-        self.animation = Animation(x=-900, duration=20)
-        self.animation.bind(on_complete=self.after_animation)
-        self.animation.start(self.instance)
+        animation = Animation(x=-900, duration=20)
+        animation.bind(on_complete=self.after_animation)
+        animation.start(instance)
 
     def build(self):
 
