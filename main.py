@@ -1,5 +1,6 @@
 import os
 import config
+import random
 import geocoder
 
 from kivy.lang import Builder
@@ -59,7 +60,7 @@ class AgeApp(MDApp):
         self.instance.x = 0
 
     def animate(self, instance):
-        # instance.text = ""
+        instance.text = random.choice(config.ping_msgs)
         instance.x = 900
         self.instance = instance
         self.animation = Animation(x=-900, duration=20)
