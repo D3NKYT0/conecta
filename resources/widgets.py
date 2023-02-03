@@ -3,6 +3,10 @@ from kivy.uix.label import Label
 from kivy.clock import Clock
 from datetime import datetime
 
+from kivymd.uix.list import IRightBodyTouch
+from kivymd.uix.selectioncontrol import MDCheckbox
+from kivymd.uix.boxlayout import MDBoxLayout
+
 
 class ClockRealTime(Label):
     def __init__(self, widget, **kwargs):
@@ -27,3 +31,11 @@ class ClockRealTime(Label):
 
         self.widget.ids.data.text = self.date
         self.widget.ids.hora.text = self.hour
+
+
+class RightCheckbox(IRightBodyTouch, MDCheckbox):
+    '''Custom right container.'''
+
+
+class RightContainer(IRightBodyTouch, MDBoxLayout):
+    adaptive_width = True

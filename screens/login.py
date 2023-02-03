@@ -4,10 +4,12 @@ from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.snackbar import MDSnackbar
 from kivymd.uix.label import MDLabel
+from kivymd.uix.relativelayout import MDRelativeLayout
 
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.utils import get_color_from_hex as hex
+from kivy.properties import StringProperty
 from kivy.lang import Builder
 
 import requests
@@ -27,6 +29,16 @@ core = Core()
 FOR_TEST = False  # Default: False
 
 
+class ContentEmail(BoxLayout):
+    def __init_subclass__(cls) -> None:
+        return super().__init_subclass__()
+
+
+class ClickableTextFieldRound(MDRelativeLayout):
+    text = StringProperty()
+    hint_text = StringProperty()
+
+
 KV = '''
 <ContentEmail>:
     orientation: "vertical"
@@ -37,38 +49,27 @@ KV = '''
         id: email_field_verify
         hint_text: "Email"
         icon_right: 'email'
+        validator: "email"
         icon_right_color: app.theme_cls.primary_color
         write_tab: False
 
     MDTextField:
         id: code_field_verify
         hint_text: "Codigo de Verificação"
-        icon_right: 'message-reply-text'
+        icon_right: 'script-text-key'
+        required: True
         icon_right_color: app.theme_cls.primary_color
         write_tab: False
 
-    MDTextField:
+    ClickableTextFieldRound:
         id: password_field_verify
         hint_text: "Nova Senha"
-        password: True
-        icon_right: 'lock'
-        icon_right_color: app.theme_cls.primary_color
-        write_tab: False
 
-    MDTextField:
+    ClickableTextFieldRound:
         id: confirm_password_field_verify
         hint_text: "Confirmar Nova Senha"
-        password: True
-        icon_right: 'lock'
-        icon_right_color: app.theme_cls.primary_color
-        write_tab: False
 '''
 Builder.load_string(KV)
-
-
-class ContentEmail(BoxLayout):
-    def __init_subclass__(cls) -> None:
-        return super().__init_subclass__()
 
 
 class LoginScreen(MDScreen):
@@ -93,10 +94,10 @@ class LoginScreen(MDScreen):
             if not self.is_decripted:
                 self.get_token_mongo(self.token["user_id"])
                 self.is_decripted = True
-            self.ids.email_field.text = self.token["login"]
+            self.ids.login_field.text = self.token["login"]
             self.ids.password_field.text = self.token["password"]
         else:
-            self.ids.email_field.text = ""
+            self.ids.login_field.text = ""
             self.ids.password_field.text = ""
         return super().on_pre_enter(*args)
 
@@ -381,10 +382,16 @@ class LoginScreen(MDScreen):
 
     def change_password(self, *args):
 
-        code = self.dialog.content_cls.ids.code_field_verify.text
-        password = self.dialog.content_cls.ids.password_field_verify.text
-        confirm = self.dialog.content_cls.ids.confirm_password_field_verify.text
         email = self.dialog.content_cls.ids.email_field_verify.text
+        code = self.dialog.content_cls.ids.code_field_verify.text
+        password = self.dialog.content_cls.ids.password_field_verify.ids.text_field.text
+        confirm = self.dialog.content_cls.ids.confirm_password_field_verify.ids.text_field.text
+
+        if len(email) == 0:
+            return self.get_message("Você precisa digitar um email!", colors['Yellow']['500'])
+
+        if "@" not in email and "." not in email:
+            return self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
 
         if len(code) < 1:
             return self.get_message("Você precisa digitar um codigo!", colors['Yellow']['500'])
@@ -395,17 +402,14 @@ class LoginScreen(MDScreen):
         if len(confirm) < 1:
             return self.get_message("Você precisa confirmar sua senha!", colors['Yellow']['500'])
 
-        if self.validation_code != code:
-            return self.get_message("Codigo de verificação incorreto!", colors['Yellow']['500'])
+        try:
+            if self.validation_code != code:
+                return self.get_message("Codigo de verificação incorreto!", colors['Yellow']['500'])
+        except AttributeError:
+            return self.get_message("Você precisa clicar no botao [ENVIAR CODIGO] antes de confirmar!", colors['Yellow']['500'])
 
         if password != confirm:
             return self.get_message("As senhas nao conferem!", colors['Yellow']['500'])
-
-        if len(email) == 0:
-            return self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
-
-        if "@" not in email and "." not in email:
-            return self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
 
         headers = {"Content-Type": "application/json"}
         headers["Authorization"] = f"Bearer {App.get_running_app().system_token}"

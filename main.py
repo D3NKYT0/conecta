@@ -26,7 +26,7 @@ from screens.spc import SpcScreen
 from screens.api import ApiScreen
 
 # controle de desenvolvimento
-IS_LIVE = False  # se TRUE liga o app de live caso contrario app normal
+IS_LIVE = True  # se TRUE liga o app de live caso contrario app normal
 IS_ICON = False  # se TRUE liga o app de icons caso contrario app normal
 geoLocalization = geocoder.ip('me')
 
@@ -39,7 +39,7 @@ class AgeApp(MDApp):
 
     def __init__(self, config_app, **kwargs):
         super().__init__(**kwargs)
-        self.__version__ = "0.0.18.x"
+        self.__version__ = "0.0.19.x"
         self.config_app = config_app
         self.token = self.config_app.data["token"]
         self.apihost = self.config_app.APIHOST
