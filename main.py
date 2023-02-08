@@ -26,7 +26,7 @@ from screens.spc import SpcScreen
 from screens.api import ApiScreen
 
 # controle de desenvolvimento
-IS_LIVE = True  # se TRUE liga o app de live caso contrario app normal
+IS_LIVE = False  # se TRUE liga o app de live caso contrario app normal
 IS_ICON = False  # se TRUE liga o app de icons caso contrario app normal
 geoLocalization = geocoder.ip('me')
 

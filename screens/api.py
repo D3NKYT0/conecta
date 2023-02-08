@@ -119,6 +119,9 @@ class ApiScreen(MDScreen):
         if int(response.status_code) == 404:
             self.ids.response.text = json_response
 
+        if int(response.status_code) == 406:
+            self.ids.response.text = json_response
+
         if int(response.status_code) == 200:
             self.ids.response.text = json_response
 
@@ -160,6 +163,9 @@ class ApiScreen(MDScreen):
             self.ids.response.text = json_response
 
         if int(response.status_code) == 404:
+            self.ids.response.text = json_response
+
+        if int(response.status_code) == 406:
             self.ids.response.text = json_response
 
         if int(response.status_code) == 200:
@@ -214,6 +220,9 @@ class ApiScreen(MDScreen):
             self.ids.response.text = json_response
 
         if int(response.status_code) == 404:
+            self.ids.response.text = json_response
+
+        if int(response.status_code) == 406:
             self.ids.response.text = json_response
 
         if int(response.status_code) == 201:
@@ -274,6 +283,9 @@ class ApiScreen(MDScreen):
         if int(response.status_code) == 404:
             self.ids.response.text = json_response
 
+        if int(response.status_code) == 406:
+            self.ids.response.text = json_response
+
         if int(response.status_code) == 200:
             self.ids.response.text = json_response
 
@@ -319,6 +331,9 @@ class ApiScreen(MDScreen):
             self.ids.response.text = json_response
 
         if int(response.status_code) == 404:
+            self.ids.response.text = json_response
+
+        if int(response.status_code) == 406:
             self.ids.response.text = json_response
 
         if int(response.status_code) == 200:
