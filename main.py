@@ -24,6 +24,7 @@ from screens.login import LoginScreen
 from screens.index import IndexScreen
 from screens.spc import SpcScreen
 from screens.api import ApiScreen
+from screens.client import ClientScreen
 
 # controle de desenvolvimento
 IS_LIVE = False  # se TRUE liga o app de live caso contrario app normal
@@ -90,6 +91,9 @@ class AgeApp(MDApp):
 
         Builder.load_file("kvs/spc.kv")
         self.manager.add_widget(SpcScreen(self, name="spc"))
+
+        Builder.load_file("kvs/client.kv")
+        self.manager.add_widget(ClientScreen(self, name="client"))
 
         return self.manager
 

@@ -119,7 +119,8 @@ class IndexScreen(MDScreen):
         App.get_running_app().manager.get_screen('spc')
 
     def getInscritosScreen(self):
-        self.get_message("Função em desenvolvimento!", colors['Yellow']['500'])
+        App.get_running_app().manager.current = 'client'
+        App.get_running_app().manager.get_screen('client')
 
     def backScreen(self, *args):
         if self.is_logged is not None:

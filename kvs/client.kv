@@ -1,0 +1,350 @@
+#: import hex kivy.utils.get_color_from_hex
+
+
+<ClientScreen>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'images/backgrounds/wallpaper_clients.jpg'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            id: TOOLBAR
+            padding: 5
+            spacing: 5
+            size_hint_y: 10
+            md_bg_color: hex('#153788')
+            orientation: 'horizontal'
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                size_hint_x: 6
+                padding: 10, 0, 0, 0
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.3
+
+                    Image:
+                        source: "images/logo/logo-toolbar.png"
+                        allow_stretch: True
+                        keep_ratio: True
+                        size_hint_y: None
+                        size_hint_x: None
+                        width: self.parent.width
+                        height: self.parent.width/self.image_ratio
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.7
+
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_x: 0.3
+
+                    MDLabel:
+                        text: 'CLIENTES CADASTRADOS'
+                        color: 'white'
+                        size_hint_x: 0.7
+                        bold: True
+                        halign: "center"
+                        font_size: '30sp'
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                size_hint_x: 4
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.9
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.1
+
+                    MDIconButton:
+                        icon: "arrow-left"
+                        theme_icon_color: "Custom"
+                        icon_color: "white"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        on_release: root.backScreen()
+
+        MDBoxLayout:
+            id: CONTENT
+            orientation: 'horizontal'
+            size_hint_y: 90
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint_x: .5
+                md_bg_color: hex("#ECF3F4")
+                id: SIDE_A
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: 0.1
+                    md_bg_color: hex("#44A3C2")
+
+                    MDBoxLayout:
+                        size_hint_x: 0.1
+
+                    MDLabel:
+                        text: 'Inscritos'
+                        color: 'white'
+                        bold: True
+                        halign: "center"
+                        font_size: '20sp'
+
+                    MDBoxLayout:
+                        size_hint_x: 0.1
+
+                MDScrollView:
+                    size_hint_y: 0.9
+
+                    MDList:
+                        id: list_clients
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint_x: .5
+                id: SIDE_B
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: 0.6
+                    padding: 20
+                    spacing: 10
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        size_hint_y: 0.2
+
+                        MDSegmentedControl:
+                            pos_hint: {"center_x": .5, "center_y": .5}
+                            md_bg_color: hex('#153788')
+                            segment_color: 'white'
+                            separator_color: "white"
+                            on_active: root.on_active(*args)
+
+                            MDSegmentedControlItem:
+                                id: opone
+                                text: "[color=153788]Todos[/color]"
+
+                            MDSegmentedControlItem:
+                                id: optwo
+                                text: "[color=fff]Restritos[/color]"
+
+                            MDSegmentedControlItem:
+                                id: opthree
+                                text: "[color=fff]Irrestritos[/color]"
+
+                        MDBoxLayout:
+                            size_hint_y: 0.1
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        size_hint_y: 0.6
+
+                        MDTextField:
+                            id: name
+                            hint_text: "Nome"
+                            pos_hint: {"center_x": .5, "center_y": .5}
+                            size_hint_x: .8
+                            icon_right: 'format-text'
+                            icon_right_color: app.theme_cls.primary_color
+                            write_tab: False
+
+                        MDTextField:
+                            id: date
+                            hint_text: "Data"
+                            pos_hint: {"center_x": .5, "center_y": .5}
+                            size_hint_x: .8
+                            icon_right: 'calendar'
+                            validator: "date"
+                            date_format: "dd/mm/yyyy"
+                            icon_right_color: app.theme_cls.primary_color
+                            write_tab: False
+                            on_focus:
+                                root.show_date_picker()
+
+                        MDTextField:
+                            id: cpf
+                            hint_text: "CPF"
+                            pos_hint: {"center_x": .5, "center_y": .5}
+                            size_hint_x: .8
+                            icon_right: 'identifier'
+                            icon_right_color: app.theme_cls.primary_color
+                            write_tab: False
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        size_hint_y: 0.2
+
+                        MDRaisedButton:
+                            text: "Consultar"
+                            pos_hint: {'center_x': .5, 'center_y': .5}
+                            md_bg_color: hex('#153788')
+                            on_release: root.consult()
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: 0.4
+                    spacing: 10
+                    md_bg_color: hex('#153788')
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        size_hint_y: 3
+                        md_bg_color: 0,0,0,0.5
+
+                        MDBoxLayout:
+                            size_hint_x: 0.1
+
+                        MDLabel:
+                            text: 'Selecione uma ação rápida abaixo'
+                            color: 'white'
+                            bold: True
+                            halign: "center"
+                            font_size: '20sp'
+
+                        MDBoxLayout:
+                            size_hint_x: 0.1
+
+                    MDBoxLayout:
+                        id: chip_box
+                        orientation: 'horizontal'
+                        size_hint_y: 3
+                        spacing: 20
+
+                        MDBoxLayout:
+                            size_hint_x: 1
+
+                        MDChip:
+                            text: "Trocar Agente"
+                            pos_hint: {"center_x": .5, "center_y": .5}
+                            text_color: app.theme_cls.primary_color
+                            icon_check_color: app.theme_cls.primary_color
+                            md_bg_color: 'white'
+                            elevation: 1
+                            on_active: if self.active: root.removes_marks_all_chips(self)
+                            # on_release: app.on_release_chip(self)
+
+                        MDChip:
+                            text: "Trocar Cidade"
+                            pos_hint: {"center_x": .5, "center_y": .5}
+                            text_color: app.theme_cls.primary_color
+                            icon_check_color: app.theme_cls.primary_color
+                            md_bg_color: 'white'
+                            elevation: 1
+                            on_active: if self.active: root.removes_marks_all_chips(self)
+                            # on_release: app.on_release_chip(self)
+
+                        MDChip:
+                            text: "Trocar Credito"
+                            pos_hint: {"center_x": .5, "center_y": .5}
+                            text_color: app.theme_cls.primary_color
+                            icon_check_color: app.theme_cls.primary_color
+                            md_bg_color: 'white'
+                            elevation: 1
+                            on_active: if self.active: root.removes_marks_all_chips(self)
+                            # on_release: app.on_release_chip(self)
+
+                        MDBoxLayout:
+                            size_hint_x: 1
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        size_hint_y: 5
+                        spacing: 10
+                        padding: 10
+
+                        MDSpinner:
+                            id: loading
+                            size_hint: None, None
+                            size: dp(46), dp(46)
+                            color: 'white'
+                            pos_hint: {'center_x': .5, 'center_y': .5}
+                            active: False
+
+                        MDRaisedButton:
+                            text: "Confirmar"
+                            text_color: hex('#153788')
+                            pos_hint: {'center_x': .5, 'center_y': .5}
+                            md_bg_color: 'white'
+                            on_release: root.loading()
+
+        MDBoxLayout:
+            id: FOOTER
+            orientation: 'vertical'
+            size_hint_y: 10
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint_y: 50
+                padding: 10
+                spacing: 10
+                md_bg_color: 1,1,1,1
+
+                MDLabel:
+                    id: information
+                    text: 'APLICAÇÃO EM FASE DE DESENVOLVIMENTO...'
+                    color: app.theme_cls.primary_color
+                    bold: True
+                    halign: "center"
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    font_size: '20sp'
+
+            MDBoxLayout:
+                padding: 7
+                spacing: 10
+                size_hint_y: 50
+                md_bg_color: hex('#153788')
+
+                MDLabel:
+                    id: data
+                    color: "white"
+                    bold: True
+                    halign: "center"
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    font_size: '18sp'
+
+                MDLabel:
+                    id: hora
+                    color: "white"
+                    bold: True
+                    halign: "center"
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    font_size: '18sp'
+
+                MDLabel:
+                    id: user_name
+                    color: "white"
+                    bold: True
+                    halign: "center"
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    font_size: '18sp'
+
+                MDLabel:
+                    id: user
+                    color: 1,1,1,1
+                    bold: True
+                    halign: "center"
+                    font_size: '18sp'
+
+                MDLabel:
+                    id: ip_address
+                    color: "white"
+                    bold: True
+                    halign: "center"
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    font_size: '18sp'
+
+                MDLabel:
+                    id: machine
+                    color: 1,1,1,1
+                    bold: True
+                    halign: "center"
+                    font_size: '18sp'
