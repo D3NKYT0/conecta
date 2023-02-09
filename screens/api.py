@@ -107,8 +107,12 @@ class ApiScreen(MDScreen):
             self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
             return
 
-        parsed = json.loads(response.content)
-        json_response = f"{json.dumps(parsed, indent=4)}"
+        try:
+            parsed = json.loads(response.content)
+            json_response = f"{json.dumps(parsed, indent=4)}"
+        except json.decoder.JSONDecodeError:
+            self.get_message("Erro de JSON no servidor, por favor contatar o setor de TI!", colors['Red']['500'], "#ffffff")
+            return
 
         if int(response.status_code) == 422:
             self.ids.response.text = json_response
@@ -153,8 +157,12 @@ class ApiScreen(MDScreen):
             self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
             return
 
-        parsed = json.loads(response.content)
-        json_response = f"{json.dumps(parsed, indent=4)}"
+        try:
+            parsed = json.loads(response.content)
+            json_response = f"{json.dumps(parsed, indent=4)}"
+        except json.decoder.JSONDecodeError:
+            self.get_message("Erro de JSON no servidor, por favor contatar o setor de TI!", colors['Red']['500'], "#ffffff")
+            return
 
         if int(response.status_code) == 422:
             self.ids.response.text = json_response
@@ -210,8 +218,12 @@ class ApiScreen(MDScreen):
             self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
             return
 
-        parsed = json.loads(response.content)
-        json_response = f"{json.dumps(parsed, indent=4)}"
+        try:
+            parsed = json.loads(response.content)
+            json_response = f"{json.dumps(parsed, indent=4)}"
+        except json.decoder.JSONDecodeError:
+            self.get_message("Erro de JSON no servidor, por favor contatar o setor de TI!", colors['Red']['500'], "#ffffff")
+            return
 
         if int(response.status_code) == 422:
             self.ids.response.text = json_response
@@ -271,8 +283,12 @@ class ApiScreen(MDScreen):
             self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
             return
 
-        parsed = json.loads(response.content)
-        json_response = f"{json.dumps(parsed, indent=4)}"
+        try:
+            parsed = json.loads(response.content)
+            json_response = f"{json.dumps(parsed, indent=4)}"
+        except json.decoder.JSONDecodeError:
+            self.get_message("Erro de JSON no servidor, por favor contatar o setor de TI!", colors['Red']['500'], "#ffffff")
+            return
 
         if int(response.status_code) == 422:
             self.ids.response.text = json_response
@@ -321,8 +337,12 @@ class ApiScreen(MDScreen):
             self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
             return
 
-        parsed = json.loads(response.content)
-        json_response = f"{json.dumps(parsed, indent=4)}"
+        try:
+            parsed = json.loads(response.content)
+            json_response = f"{json.dumps(parsed, indent=4)}"
+        except json.decoder.JSONDecodeError:
+            self.get_message("Erro de JSON no servidor, por favor contatar o setor de TI!", colors['Red']['500'], "#ffffff")
+            return
 
         if int(response.status_code) == 422:
             self.ids.response.text = json_response
