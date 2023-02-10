@@ -26,10 +26,10 @@ from screens.spc import SpcScreen
 from screens.api import ApiScreen
 from screens.client import ClientScreen
 
+
 # controle de desenvolvimento
 IS_LIVE = False  # se TRUE liga o app de live caso contrario app normal
 IS_ICON = False  # se TRUE liga o app de icons caso contrario app normal
-geoLocalization = geocoder.ip('me')
 
 
 class AgeApp(MDApp):
@@ -58,6 +58,7 @@ class AgeApp(MDApp):
 
     def after_animation(self, animation, widget):
         animation.stop(widget)
+        geoLocalization = geocoder.ip('me')
         widget.text = f"{get_week_day()}, {geoLocalization.address} - Versão do Aplicativo: {self.__version__}"
         widget.x = 0
 
