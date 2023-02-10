@@ -2,6 +2,8 @@ import random
 
 from kivy.app import App
 from kivy.utils import get_color_from_hex as hex
+from kivy.uix.boxlayout import BoxLayout
+from kivy.lang import Builder
 
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.button import MDFlatButton
@@ -14,12 +16,36 @@ from kivymd.color_definitions import colors
 from resources import encrypter, widgets, utils, data_utils
 
 
+class ContentPopup(BoxLayout):
+    def __init_subclass__(cls) -> None:
+        return super().__init_subclass__()
+
+
+KV = '''
+<ContentPopup>:
+    orientation: "vertical"
+    size_hint_y: None
+    height: "400dp"
+
+    Image:
+        id: graph_image
+        allow_stretch: True
+        keep_ratio: True
+        size_hint_y: None
+        size_hint_x: None
+        width: self.parent.width
+        height: self.parent.width/self.image_ratio
+'''
+Builder.load_string(KV)
+
+
 class IndexScreen(MDScreen):
     def __init__(self, app, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.app = app
         self.token = None
         self.exit_popup = None
+        self.popup_graph_dialog = None
         self.is_logged = None
         self.clock = widgets.ClockRealTime(widget=self).start()
         self.hardware = utils.getSystemInfo()
@@ -135,6 +161,28 @@ class IndexScreen(MDScreen):
 
     def close_exit_popup(self, *args):
         self.exit_popup.dismiss()
+
+    def close_graph_dialog(self, *args):
+        self.popup_graph_dialog.dismiss()
+
+    def popup_graph(self, source: str, *args):
+        if not self.popup_graph_dialog:
+            self.popup_graph_dialog = MDDialog(
+                title="Visão ampliada do gráfico:",
+                type="custom",
+                content_cls=ContentPopup(),
+                buttons=[
+                    MDFlatButton(
+                        text="SAIR",
+                        theme_text_color="Custom",
+                        text_color="white",
+                        md_bg_color="red",
+                        on_release=self.close_graph_dialog
+                    )
+                ],
+            )
+        self.popup_graph_dialog.content_cls.ids.graph_image.source = source
+        self.popup_graph_dialog.open()
 
     def dialog_spam(self):
         close_button = MDFlatButton(

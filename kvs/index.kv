@@ -163,15 +163,20 @@
                                 MDBoxLayout:
                                     size_hint_y: 40
 
-                                    Image:
-                                        id: image_one
-                                        source: "c:/tmp/grafico_line.png"
-                                        allow_stretch: True
-                                        keep_ratio: True
-                                        size_hint_y: None
-                                        size_hint_x: None
-                                        width: self.parent.width
-                                        height: self.parent.width/self.image_ratio
+                                    Button:
+                                        background_normal: ''
+                                        background_color: hex('#E0E9ED')
+                                        background_down: ''
+                                        on_release: root.popup_graph("c:/tmp/grafico_line.png")
+                                        Image:
+                                            id: image_one
+                                            source: "c:/tmp/grafico_line.png"
+                                            y: self.parent.y
+                                            x: self.parent.x
+                                            allow_stretch: True
+                                            keep_ratio: True
+                                            width: self.parent.width
+                                            height: self.parent.width/self.image_ratio
 
                                 MDBoxLayout:
                                     size_hint_y: 4
@@ -235,15 +240,20 @@
                                 MDBoxLayout:
                                     size_hint_y: 40
 
-                                    Image:
-                                        id: image_two
-                                        source: "c:/tmp/grafico_bar.png"
-                                        allow_stretch: True
-                                        keep_ratio: True
-                                        size_hint_y: None
-                                        size_hint_x: None
-                                        width: self.parent.width
-                                        height: self.parent.width/self.image_ratio
+                                    Button:
+                                        background_normal: ''
+                                        background_color: hex('#E0E9ED')
+                                        background_down: ''
+                                        on_release: root.popup_graph("c:/tmp/grafico_bar.png")
+                                        Image:
+                                            id: image_two
+                                            source: "c:/tmp/grafico_bar.png"
+                                            y: self.parent.y
+                                            x: self.parent.x
+                                            allow_stretch: True
+                                            keep_ratio: True
+                                            width: self.parent.width
+                                            height: self.parent.width/self.image_ratio
 
                                 MDBoxLayout:
                                     size_hint_y: 4
@@ -307,15 +317,20 @@
                                 MDBoxLayout:
                                     size_hint_y: 40
 
-                                    Image:
-                                        id: image_three
-                                        source: "c:/tmp/grafico_pie.png"
-                                        allow_stretch: True
-                                        keep_ratio: True
-                                        size_hint_y: None
-                                        size_hint_x: None
-                                        width: self.parent.width
-                                        height: self.parent.width/self.image_ratio
+                                    Button:
+                                        background_normal: ''
+                                        background_color: hex('#E0E9ED')
+                                        background_down: ''
+                                        on_release: root.popup_graph("c:/tmp/grafico_pie.png")
+                                        Image:
+                                            id: image_three
+                                            source: "c:/tmp/grafico_pie.png"
+                                            y: self.parent.y
+                                            x: self.parent.x
+                                            allow_stretch: True
+                                            keep_ratio: True
+                                            width: self.parent.width
+                                            height: self.parent.width/self.image_ratio
 
                                 MDBoxLayout:
                                     size_hint_y: 4
