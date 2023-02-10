@@ -121,7 +121,11 @@ class LoginScreen(MDScreen):
                 self.is_token_valid = False
                 return False
 
-            App.get_running_app().user_now_data = json.loads(response.content)
+            try:
+                App.get_running_app().user_now_data = json.loads(response.content)
+            except json.decoder.JSONDecodeError:
+                self.get_message("Erro no servidor da API, contate o setor de TI!", colors['Red']['500'], "#ffffff")
+                return False
 
             classifier_as = App.get_running_app().user_now_data['classified_as']
             if int(classifier_as) not in [2, 4, 5, 8]:
@@ -182,7 +186,7 @@ class LoginScreen(MDScreen):
                 return False, dict()
 
             except json.decoder.JSONDecodeError:
-                self.get_message("Falha na comunicação!", colors['Red']['500'], "#ffffff")
+                self.get_message("Erro no servidor da API, contate o setor de TI!", colors['Red']['500'], "#ffffff")
                 return False, dict()
 
             except requests.exceptions.ConnectionError:
@@ -339,6 +343,10 @@ class LoginScreen(MDScreen):
 
         except requests.exceptions.ConnectionError:
             self.get_message("Servidor fora de serviço!", colors['Red']['500'], "#ffffff")
+            return self.close_dialog()
+
+        except json.decoder.JSONDecodeError:
+            self.get_message("Erro no servidor da API, contate o setor de TI!", colors['Red']['500'], "#ffffff")
             return self.close_dialog()
 
         if int(response.status_code) == 401:
