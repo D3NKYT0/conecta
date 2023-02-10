@@ -334,7 +334,7 @@ class LoginScreen(MDScreen):
         body = json.dumps({"email": email_text})
 
         try:
-            response = requests.post(f"{self.host}/ti/search", data=body, headers=headers, timeout=10.0)
+            response = requests.post(f"{self.host}/ti/search/email", data=body, headers=headers, timeout=10.0)
             content = json.loads(response.content)
 
         except requests.exceptions.Timeout:
@@ -367,7 +367,7 @@ class LoginScreen(MDScreen):
         body = json.dumps({"destination_email": email_text, "subject": "Codigo de Verificação", "content": self.validation_code})
 
         try:
-            response = requests.post(f"{self.host}/ti/email", data=body, headers=headers, timeout=10.0)
+            response = requests.post(f"{self.host}/ti/send/email", data=body, headers=headers, timeout=10.0)
 
         except requests.exceptions.Timeout:
             self.get_message("Falha na comunicação!", colors['Red']['500'], "#ffffff")
@@ -428,7 +428,7 @@ class LoginScreen(MDScreen):
 
         try:
             user_id = self.user_recovery['id']
-            response = requests.put(f"{self.host}/ti/change_password/{user_id}", data=body, headers=headers, timeout=10.0)
+            response = requests.put(f"{self.host}/ti/change/password/{user_id}", data=body, headers=headers, timeout=10.0)
 
         except requests.exceptions.Timeout:
             self.get_message("Falha na comunicação!", colors['Red']['500'], "#ffffff")
