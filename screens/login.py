@@ -110,7 +110,7 @@ class LoginScreen(MDScreen):
             hash, key_hash = core.do_hash()
             headers['conecta-age-hash'] = hash
             headers['conecta-age-key'] = key_hash
-            response = requests.get(f"{self.host}/ti/user/{login}", headers=headers, timeout=10.0)
+            response = requests.get(f"{self.host}/ti/search/user/{login}", headers=headers, timeout=10.0)
 
             if int(response.status_code) == 403:
                 self.get_message("Aplicativo Incompativel!", colors['Purple']['500'], "#ffffff") 
@@ -326,15 +326,13 @@ class LoginScreen(MDScreen):
             return self.get_message("Você precisa digitar um email valido!", colors['Yellow']['500'])
 
         email_text = self.dialog.content_cls.ids.email_field_verify.text
-        headers = {"Content-Type": "application/json"}
-        headers["Authorization"] = f"Bearer {App.get_running_app().system_token}"
+        headers = {"Authorization": f"Bearer {App.get_running_app().system_token}"}
         hash, key_hash = core.do_hash()
         headers['conecta-age-hash'] = hash
         headers['conecta-age-key'] = key_hash
-        body = json.dumps({"email": email_text})
 
         try:
-            response = requests.post(f"{self.host}/ti/search/email", data=body, headers=headers, timeout=10.0)
+            response = requests.get(f"{self.host}/ti/search/email/{email_text}", headers=headers, timeout=10.0)
             content = json.loads(response.content)
 
         except requests.exceptions.Timeout:
