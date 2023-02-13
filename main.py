@@ -40,7 +40,7 @@ class AgeApp(MDApp):
 
     def __init__(self, config_app, **kwargs):
         super().__init__(**kwargs)
-        self.__version__ = "0.0.21.x"
+        self.__version__ = "0.0.22.x"
         self.config_app = config_app
         self.token = self.config_app.data["token"]
         self.apihost = self.config_app.APIHOST

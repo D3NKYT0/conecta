@@ -84,7 +84,7 @@
                 id: SIDE_A
 
                 MDBoxLayout:
-                    orientation: 'vertical'
+                    orientation: 'horizontal'
                     size_hint_y: 0.1
                     md_bg_color: hex("#44A3C2")
 
@@ -99,7 +99,17 @@
                         font_size: '20sp'
 
                     MDBoxLayout:
-                        size_hint_x: 0.1
+                        size_hint_x: 0.05
+
+                        MDCheckbox:
+                            id: check_all
+                            size_hint: None, None
+                            size: "48dp", "48dp"
+                            pos_hint: {'center_x': .5, 'center_y': .5}
+                            on_active: root.on_checkbox_active(*args)
+
+                    MDBoxLayout:
+                        size_hint_x: 0.088
 
                 MDScrollView:
                     size_hint_y: 0.9
@@ -148,36 +158,94 @@
                         orientation: 'vertical'
                         size_hint_y: 0.6
 
-                        MDTextField:
-                            id: name
-                            hint_text: "Nome"
-                            pos_hint: {"center_x": .5, "center_y": .5}
-                            size_hint_x: .8
-                            icon_right: 'format-text'
-                            icon_right_color: app.theme_cls.primary_color
-                            write_tab: False
+                        MDBoxLayout:
+                            orientation: 'horizontal'
+                            padding: 55, 0, 55, 0
+                            spacing: 10
 
-                        MDTextField:
-                            id: date
-                            hint_text: "Data"
-                            pos_hint: {"center_x": .5, "center_y": .5}
-                            size_hint_x: .8
-                            icon_right: 'calendar'
-                            validator: "date"
-                            date_format: "dd/mm/yyyy"
-                            icon_right_color: app.theme_cls.primary_color
-                            write_tab: False
-                            on_focus:
-                                root.show_date_picker()
+                            MDTextField:
+                                id: name
+                                hint_text: "Nome do Cliente"
+                                size_hint_x: .3
+                                icon_right: 'format-text'
+                                icon_right_color: app.theme_cls.primary_color
+                                write_tab: False
+                                on_focus:
+                                    if self.focus: root.change_menu("cliente")
+                                    if self.focus: root.menu_dropDown.open()
+                                on_text: root.menu_update(self.text, "cliente")
 
-                        MDTextField:
-                            id: cpf
-                            hint_text: "CPF"
-                            pos_hint: {"center_x": .5, "center_y": .5}
-                            size_hint_x: .8
-                            icon_right: 'identifier'
-                            icon_right_color: app.theme_cls.primary_color
-                            write_tab: False
+                            MDTextField:
+                                id: agent
+                                hint_text: "Nome do Agente"
+                                size_hint_x: .3
+                                icon_right: 'format-text'
+                                icon_right_color: app.theme_cls.primary_color
+                                write_tab: False
+                                on_focus:
+                                    if self.focus: root.change_menu("agente")
+                                    if self.focus: root.menu_dropDown.open()
+                                on_text: root.menu_update(self.text, "agente")
+
+                        MDBoxLayout:
+                            orientation: 'horizontal'
+                            padding: 55, 0, 55, 0
+                            spacing: 10
+
+                            MDTextField:
+                                id: date_start
+                                hint_text: "Data Inicial"
+                                # pos_hint: {"center_x": .5, "center_y": .5}
+                                size_hint_x: .3
+                                icon_right: 'calendar'
+                                validator: "date"
+                                date_format: "dd/mm/yyyy"
+                                icon_right_color: app.theme_cls.primary_color
+                                write_tab: False
+                                on_focus:
+                                    root.show_date_picker("start")
+
+                            MDTextField:
+                                id: date_end
+                                hint_text: "Data Final"
+                                # pos_hint: {"center_x": .5, "center_y": .5}
+                                size_hint_x: .3
+                                icon_right: 'calendar'
+                                validator: "date"
+                                date_format: "dd/mm/yyyy"
+                                icon_right_color: app.theme_cls.primary_color
+                                write_tab: False
+                                on_focus:
+                                    root.show_date_picker("end")
+
+                        MDBoxLayout:
+                            orientation: 'horizontal'
+                            padding: 55, 0, 55, 0
+                            spacing: 10
+
+                            MDTextField:
+                                id: cpf
+                                hint_text: "CPF"
+                                size_hint_x: .3
+                                icon_right: 'identifier'
+                                icon_right_color: app.theme_cls.primary_color
+                                write_tab: False
+                                on_focus:
+                                    if self.focus: root.change_menu("cpf")
+                                    if self.focus: root.menu_dropDown.open()
+                                on_text: root.menu_update(self.text, "cpf")
+
+                            MDTextField:
+                                id: city
+                                hint_text: "Cidade"
+                                size_hint_x: .3
+                                icon_right: 'home'
+                                icon_right_color: app.theme_cls.primary_color
+                                write_tab: False
+                                on_focus:
+                                    if self.focus: root.change_menu("cidade") 
+                                    if self.focus: root.menu_dropDown.open()
+                                on_text: root.menu_update(self.text, "cidade")
 
                     MDBoxLayout:
                         orientation: 'vertical'
