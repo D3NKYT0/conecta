@@ -158,7 +158,8 @@ class ClientScreen(MDScreen):
             self.fast_search = segmented_item.text
 
     def backScreen(self, *args):
-        pass
+        App.get_running_app().manager.current = 'index'
+        App.get_running_app().manager.get_screen('index')
 
     def removes_marks_all_chips(self, selected_instance_chip):
         for instance_chip in self.ids.chip_box.children:
