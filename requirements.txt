@@ -9,3 +9,4 @@ pycryptodome
 pymongo[srv]
 passlib[bcrypt]
 geocoder
+xmltodict

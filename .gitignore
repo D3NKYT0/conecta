@@ -1,5 +1,7 @@
 # ignore Conecta
 config.py
+test.py
+lista_de_cpf.txt
 dev/
 dist/
 build/
