@@ -2,6 +2,7 @@ import os
 import config
 import random
 import geocoder
+import locale
 
 from kivy.lang import Builder
 from kivy.core.window import Window
@@ -31,10 +32,13 @@ from screens.client import ClientScreen
 IS_LIVE = False  # se TRUE liga o app de live caso contrario app normal
 IS_ICON = False  # se TRUE liga o app de icons caso contrario app normal
 
+# Configs
+Window.size = (1280, 720)
+locale.setlocale(locale.LC_TIME, 'pt_PT.utf8')
+
 
 class AgeApp(MDApp):
 
-    Window.size = (1280, 720)
     title = 'Conecta Age'
     icon = 'images/icons/app.png'
 

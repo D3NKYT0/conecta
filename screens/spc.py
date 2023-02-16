@@ -70,7 +70,8 @@ class SpcScreen(MDScreen):
         self.rd_tb = list()
 
     def restart_data_table_rp(self):
-        self.ids.data_response.remove_widget(self.tb_response)
+        if self.tb_response is not None:
+            self.ids.data_response.remove_widget(self.tb_response)
         self.tb_response = MDDataTable(
             use_pagination=True,
             check=True,
