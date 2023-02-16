@@ -94,8 +94,7 @@ class IndexScreen(MDScreen):
         try:
             utils.create_graphic_bar(x_data)
         except FileNotFoundError:
-            description = "Crie uma pasta chamada \"tmp\" no disco local C"
-            self.get_message(description, colors['Yellow']['500'])
+            pass
 
         data_pie = {
             "labels": ['Ex1', 'Ex2', 'Ex3', 'Ex4'],
@@ -105,8 +104,7 @@ class IndexScreen(MDScreen):
         try:
             utils.create_graphic_pizza(data_pie)
         except FileNotFoundError:
-            description = "Crie uma pasta chamada \"tmp\" no disco local C"
-            self.get_message(description, colors['Yellow']['500'])
+            pass
 
         self.ids.image_one.reload()
         self.ids.image_two.reload()
