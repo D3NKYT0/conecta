@@ -48,7 +48,8 @@ class SpcScreen(MDScreen):
         pass
 
     def restart_data_table_tb(self):
-        self.ids.data_box.remove_widget(self.table)
+        if self.table is not None:
+            self.ids.data_box.remove_widget(self.table)
         self.table = MDDataTable(
             use_pagination=True,
             check=True,

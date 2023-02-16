@@ -84,17 +84,29 @@ class IndexScreen(MDScreen):
         x, y = data_utils.MESES, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         second_data = [data_utils.MESES, [2, 1, 3, 4, 6, 5, 7, 8, 10, 9, 12, 11]]
         title, legends = 'Solititações de Negativação', ['Pedidos de Solicitações', 'Solicitações Efetivadas']
-        utils.create_graphics(x, y, second_data, title, legends)
+        try:
+            utils.create_graphics(x, y, second_data, title, legends)
+        except FileNotFoundError:
+            description = "Crie uma pasta chamada \"tmp\" no disco local C"
+            self.get_message(description, colors['Yellow']['500'])
 
         x_data = [21,22,23,4,5,6,77,8,9,10,31,32,33,34,35,36,37,18,49,50,100]
-        utils.create_graphic_bar(x_data)
+        try:
+            utils.create_graphic_bar(x_data)
+        except FileNotFoundError:
+            description = "Crie uma pasta chamada \"tmp\" no disco local C"
+            self.get_message(description, colors['Yellow']['500'])
 
         data_pie = {
             "labels": ['Ex1', 'Ex2', 'Ex3', 'Ex4'],
             "sizes": [10, 20, 30, 40],
             "explode": [0.05, 0.05, 0.05, 0.05]
                 }
-        utils.create_graphic_pizza(data_pie)
+        try:
+            utils.create_graphic_pizza(data_pie)
+        except FileNotFoundError:
+            description = "Crie uma pasta chamada \"tmp\" no disco local C"
+            self.get_message(description, colors['Yellow']['500'])
 
         self.ids.image_one.reload()
         self.ids.image_two.reload()
