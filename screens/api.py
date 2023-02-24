@@ -39,6 +39,8 @@ class ApiScreen(MDScreen):
 
     def on_pre_enter(self, *args):
 
+        self.ep['host'] = App.get_running_app().apihost + '/'
+
         self.token = self.app.token
         self.user = self.app.USER_LOGGED
 

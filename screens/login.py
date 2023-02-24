@@ -90,6 +90,9 @@ class LoginScreen(MDScreen):
         return super().on_pre_leave(*args)
 
     def on_pre_enter(self, *args):
+
+        self.host = App.get_running_app().apihost
+
         if self.token['is_active']:
             if not self.is_decripted:
                 self.get_token_mongo(self.token["user_id"])
@@ -103,7 +106,8 @@ class LoginScreen(MDScreen):
 
     def db_is_active(self, login):
         try:
-            cl_users = self.app.db.cd("users")
+            collection = "users" if App.get_running_app().environment == "Produção" else "homo_users"
+            cl_users = self.app.db.cd(collection)
             user = cl_users.find_one({"_id": self.token['user_id']})
             bearer = encrypter.decrypt_text(self.token['Bearer'], user['data']['bearer']['iv'], user['data']['bearer']['key'])
             headers = {"Authorization": f"Bearer {bearer}"}
@@ -144,7 +148,8 @@ class LoginScreen(MDScreen):
 
     def get_token_mongo(self, user_id):
 
-        cl_users = self.app.db.cd("users")
+        collection = "users" if App.get_running_app().environment == "Produção" else "homo_users"
+        cl_users = self.app.db.cd(collection)
         user = cl_users.find_one({"_id": user_id})
         
         if user is None:
@@ -169,7 +174,8 @@ class LoginScreen(MDScreen):
 
     def get_token(self, login, password):
 
-        cl_tokens = self.app.db.cd("tokens")
+        collection = "tokens" if App.get_running_app().environment == "Produção" else "homo_tokens"
+        cl_tokens = self.app.db.cd(collection)
         token_data = cl_tokens.find_one({"_id": login})
         self.is_logged = token_data
         if token_data is None:
@@ -223,9 +229,14 @@ class LoginScreen(MDScreen):
             if FOR_TEST:
                 self.is_logged['is_logged'] = False
                 return True, token_data['content']
-                
-            self.get_message("Você já esta logado em outro terminal!", colors['Red']['500'], "#ffffff")
-            return False, token_data['content']
+            
+            if App.get_running_app().environment == "Produção":
+                self.get_message("Você já esta logado em outro terminal!", colors['Red']['500'], "#ffffff")
+                return False, token_data['content']
+            
+            else:
+                self.is_logged['is_logged'] = False
+                return True, token_data['content']
 
         else:
             cl_tokens.update_one({"_id": login}, {"$set": {"is_logged": True}})
@@ -245,7 +256,8 @@ class LoginScreen(MDScreen):
         
         if response[0] is True:
 
-            cl_users = self.app.db.cd("users")
+            collection = "users" if App.get_running_app().environment == "Produção" else "homo_users"
+            cl_users = self.app.db.cd(collection)
             user = cl_users.find_one({"_id": str(response[1]['user']['id'])})
             if user is None:
 
@@ -281,12 +293,14 @@ class LoginScreen(MDScreen):
 
             # verificando a disponibilidade do banco de operaçao (postgresql)
             if not self.db_is_active(loginText):
-                cl_tokens = self.app.db.cd("tokens")
+                collection = "tokens" if App.get_running_app().environment == "Produção" else "homo_tokens"
+                cl_tokens = self.app.db.cd(collection)
                 cl_tokens.update_one({"_id": loginText}, {"$set": {"is_logged": False}})
 
                 if not self.is_token_valid:
                     user_id = str(response[1]['user']['id'])
-                    cl_users = self.app.db.cd("users")
+                    collection = "users" if App.get_running_app().environment == "Produção" else "homo_users"
+                    cl_users = self.app.db.cd(collection)
                     cl_tokens.delete_one({"_id": loginText})
                     cl_users.delete_one({"_id": user_id})
                     self.is_token_valid = True

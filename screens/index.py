@@ -80,6 +80,7 @@ class IndexScreen(MDScreen):
     def on_pre_enter(self, *args):
 
         self.token = self.app.token
+        self.host = App.get_running_app().apihost
 
         x, y = data_utils.MESES, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         second_data = [data_utils.MESES, [2, 1, 3, 4, 6, 5, 7, 8, 10, 9, 12, 11]]
@@ -125,11 +126,13 @@ class IndexScreen(MDScreen):
         self.ids.user_name.text = str(self.user['name']).upper()
         self.ids.ip_address.text = str(self.hardware['ip-address'])
         
-        cl_users = self.app.db.cd("users")
+        collection = "users" if App.get_running_app().environment == "Produção" else "homo_users"
+        cl_users = self.app.db.cd(collection)
         user = cl_users.find_one({"_id": self.token['user_id']})
         login = encrypter.decrypt_text(self.token['login'], user['data']['login']['iv'], user['data']['login']['key'])
 
-        cl_tokens = self.app.db.cd("tokens")
+        collection = "tokens" if App.get_running_app().environment == "Produção" else "homo_tokens"
+        cl_tokens = self.app.db.cd(collection)
         token_data = cl_tokens.find_one({"_id": login})
         self.is_logged = token_data
 
@@ -161,8 +164,10 @@ class IndexScreen(MDScreen):
     def backScreen(self, *args):
         if self.is_logged is not None:
             self.is_logged = None
-            cl_tokens = self.app.db.cd("tokens")
-            cl_users = self.app.db.cd("users")
+            collection = "tokens" if App.get_running_app().environment == "Produção" else "homo_tokens"
+            cl_tokens = self.app.db.cd(collection)
+            collection = "users" if App.get_running_app().environment == "Produção" else "homo_users"
+            cl_users = self.app.db.cd(collection)
             cl_tokens.delete_one({"_id": self.app.username})
             cl_users.delete_one({"_id": self.app.USER_LOGGED["id"]})
             App.get_running_app().manager.current = 'login'

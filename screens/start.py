@@ -43,13 +43,15 @@ class StartScreen(MDScreen):
         if "Produção" in segmented_item.text:
             self.ids.oponestart.text = "[color=153788]Produção[/color]"
             self.ids.optwostart.text = "[color=fff]Homologação[/color]"
-            self.fast_search = segmented_item.text
+            self.fast_search = segmented_item.text.replace("[color=153788]", "").replace("[/color]", "")
+            print(self.fast_search)
             App.get_running_app().environment = self.fast_search
 
         elif "Homologação" in segmented_item.text:
             self.ids.oponestart.text = "[color=fff]Produção[/color]"
             self.ids.optwostart.text = "[color=153788]Homologação[/color]"
-            self.fast_search = segmented_item.text
+            self.fast_search = segmented_item.text.replace("[color=153788]", "").replace("[/color]", "")
+            print(self.fast_search)
             App.get_running_app().environment = self.fast_search
 
     def login(self):
