@@ -44,8 +44,10 @@ class ApiScreen(MDScreen):
         self.token = self.app.token
         self.user = self.app.USER_LOGGED
 
-        cl_users = self.app.db.cd("users")
+        collection = "users" if App.get_running_app().environment == "Produção" else "homo_users"
+        cl_users = self.app.db.cd(collection)
         user = cl_users.find_one({"_id": self.token['user_id']})
+
         self.bearer = encrypter.decrypt_text(self.token['Bearer'], user['data']['bearer']['iv'], user['data']['bearer']['key'])
 
         self.ids.data.text = str(self.clock.date)
