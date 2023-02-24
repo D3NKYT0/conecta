@@ -30,7 +30,32 @@
                 height: self.parent.width/self.image_ratio
 
         MDBoxLayout:
+            size_hint_y: .1
+
+        MDBoxLayout:
+            orientation: 'vertical'
             size_hint_y: .2
+
+            MDSegmentedControl:
+                pos_hint: {"center_x": .5, "center_y": .5}
+                md_bg_color: hex('#153788')
+                segment_color: 'white'
+                separator_color: "white"
+                on_active: root.on_active(*args)
+
+                MDSegmentedControlItem:
+                    id: oponestart
+                    text: "[color=153788]Produção[/color]"
+
+                MDSegmentedControlItem:
+                    id: optwostart
+                    text: "[color=fff]Homologação[/color]"
+                
+            MDBoxLayout:
+                size_hint_y: 0.1
+
+        MDBoxLayout:
+            size_hint_y: .1
 
         MDBoxLayout:
             size_hint_y: .2
@@ -57,4 +82,4 @@
                 size_hint_y: .6
 
         MDBoxLayout:
-            size_hint_y: .3
+            size_hint_y: .2

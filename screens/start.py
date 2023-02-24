@@ -1,21 +1,22 @@
-from kivymd.uix.screen import MDScreen
-from kivy.app import App
-
 import json
 import requests
 
-from kivymd.color_definitions import colors
+from kivy.app import App
 from auth.utils_hash import Core
-from kivymd.uix.snackbar import MDSnackbar
+
 from kivymd.uix.label import MDLabel
-
-
-core = Core()
+from kivymd.uix.screen import MDScreen
+from kivymd.uix.snackbar import MDSnackbar
+from kivymd.color_definitions import colors
+from kivymd.uix.segmentedcontrol import MDSegmentedControl, MDSegmentedControlItem
 
 try:
     import pyi_splash  # essa importação é referente ao PYINSTALLER (nao precisa ser instalada)
 except:
     pass
+
+
+core = Core()
 
 
 class StartScreen(MDScreen):
@@ -24,6 +25,7 @@ class StartScreen(MDScreen):
         super().__init__(*args, **kwargs)
         self.system = App.get_running_app().config_app.SYSTEM
         self.host = App.get_running_app().apihost
+        self.fast_search = "Produção"
 
     def on_pre_enter(self, *args):
         try:
@@ -36,7 +38,28 @@ class StartScreen(MDScreen):
         self.bar = MDSnackbar(MDLabel(text=text, theme_text_color="Custom", text_color=text_color), md_bg_color=color)
         self.bar.open()
 
+    def on_active(self, segmented_control: MDSegmentedControl, segmented_item: MDSegmentedControlItem) -> None:
+
+        if "Produção" in segmented_item.text:
+            self.ids.oponestart.text = "[color=153788]Produção[/color]"
+            self.ids.optwostart.text = "[color=fff]Homologação[/color]"
+            self.fast_search = segmented_item.text
+            App.get_running_app().environment = self.fast_search
+
+        elif "Homologação" in segmented_item.text:
+            self.ids.oponestart.text = "[color=fff]Produção[/color]"
+            self.ids.optwostart.text = "[color=153788]Homologação[/color]"
+            self.fast_search = segmented_item.text
+            App.get_running_app().environment = self.fast_search
+
     def login(self):
+
+        if self.fast_search == "Homologação":
+            App.get_running_app().apihost = App.get_running_app().homologation
+            self.host = App.get_running_app().apihost
+        else:
+            App.get_running_app().apihost = App.get_running_app().production
+            self.host = App.get_running_app().apihost
 
         body = json.dumps({"login": self.system['login'], "password": self.system['password']})
         headers = {"Content-Type": "application/json"}

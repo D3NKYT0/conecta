@@ -132,6 +132,10 @@ class LoginScreen(MDScreen):
                 self.get_message("Sua conta nao tem acesso a esse aplicativo, verifique com o TI!", colors['Yellow']['500'])
                 return False
             
+            if int(classifier_as) not in [2] and App.get_running_app().environment != "Produção":
+                self.get_message("Sua conta não tem acesso ao servidor de homologação, mude para PRODUÇÃO!", colors['Yellow']['500'])
+                return False
+            
             return True
 
         except (requests.exceptions.Timeout, requests.exceptions.ConnectionError):

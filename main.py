@@ -44,10 +44,13 @@ class AgeApp(MDApp):
 
     def __init__(self, config_app, **kwargs):
         super().__init__(**kwargs)
-        self.__version__ = "0.0.24.x"
+        self.__version__ = "0.0.25.0"
         self.config_app = config_app
         self.token = self.config_app.data["token"]
-        self.apihost = self.config_app.APIHOST
+        self.homologation = self.config_app.HOMOLOGATION_HOST
+        self.production = self.config_app.APIHOST
+        self.apihost = self.production
+        self.environment = "Produção"  # Default
         
         self.DEBUG = False
         self.RAISE_ERROR = False
