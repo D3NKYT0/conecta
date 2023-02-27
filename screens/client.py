@@ -1,14 +1,22 @@
-from kivy.app import App
-
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.pickers import MDDatePicker
 from kivymd.uix.list import ThreeLineAvatarIconListItem, ImageLeftWidget
 from kivymd.uix.segmentedcontrol import MDSegmentedControl, MDSegmentedControlItem
 from kivymd.uix.selectioncontrol.selectioncontrol import MDCheckbox
+from kivymd.uix.button import MDFlatButton
+from kivymd.uix.dialog import MDDialog
 from kivymd.uix.menu import MDDropdownMenu
+
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.lang import Builder
+
 from resources.widgets import *
-from functools import partial
 from resources import widgets, utils
+from functools import partial
+
+
+Builder.load_file("kvs/utils.kv")
 
 
 class Client(ThreeLineAvatarIconListItem):
@@ -16,12 +24,56 @@ class Client(ThreeLineAvatarIconListItem):
         super().__init__(*args, **kwargs)
 
 
+class ContentClientOpen(BoxLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def defineFields(self, widget):
+        self.ids.br_cpf.text = widget.ids.label_br_cpf.text
+        self.ids.br_name.text = widget.ids.label_br_name.text
+        self.ids.br_cep.text = widget.ids.label_br_cep.text
+        self.ids.br_logradouro.text = widget.ids.label_br_logradouro.text
+        self.ids.br_complemento.text = widget.ids.label_br_complemento.text
+        self.ids.br_estado.text = widget.ids.label_br_estado.text
+        self.ids.br_municipio.text = widget.ids.label_br_municipio.text
+        self.ids.br_bairro.text = widget.ids.label_br_bairro.text
+        self.ids.bl_telefone.text = widget.ids.label_bl_telefone.text
+        self.ids.bl_celular.text = widget.ids.label_bl_celular.text
+        self.ids.bl_email.text = widget.ids.label_bl_email.text
+        self.ids.bl_linha_de_credito.text = widget.ids.label_bl_linha_de_credito.text
+        self.ids.bl_atividade.text = widget.ids.label_bl_atividade.text
+        self.ids.bl_tempo_de_atividade.text = widget.ids.label_bl_tempo_de_atividade.text
+        self.ids.bl_agente.text = widget.ids.label_bl_agente.text
+
+    def __init_subclass__(cls) -> None:
+        return super().__init_subclass__()
+    
+    def saveClient(self, *args):
+        self.ids.btSaveClient.disabled = True
+
+
+class ContentClient(BoxLayout):
+    def __init__(self, data_client, **kwargs):
+        self.name = data_client.get("nome", "nome padrao")
+        super().__init__(**kwargs)
+
+    def __init_subclass__(cls) -> None:
+        return super().__init_subclass__()
+    
+    def editClient(self, box, *args):
+        self.remove_widget(box)
+        widget = ContentClientOpen()
+        widget.defineFields(self)
+        self.add_widget(widget)
+
+
 class ClientScreen(MDScreen):
     def __init__(self, *args, **kwargs):
         self.fast_search = "Todos"
+        self.ep = list()
+        self.dialog = None
         self.clock = widgets.ClockRealTime(widget=self).start()
         self.hardware = utils.getSystemInfo()
-        self.ep = list()
         super().__init__(*args, **kwargs)
 
     def on_pre_enter(self, *args):
@@ -133,11 +185,13 @@ class ClientScreen(MDScreen):
 
     def loadingClients(self):
         for _ in range(10):
+            client_db = {}
             client = Client(ImageLeftWidget(source="images/icons/client.png"), RightCheckbox())
             client.id = f"{_}"
             client.text = "George Uamirim Rodriges da Silva"
             client.secondary_text = "123.456.789-10"
             client.tertiary_text = "Recife, rua das flores, numero tal, bairro tal"
+            client.on_release = partial(self.openClient, client_db)
             self.ids.list_clients.add_widget(client)
 
     def on_active(self, segmented_control: MDSegmentedControl, segmented_item: MDSegmentedControlItem) -> None:
@@ -195,3 +249,23 @@ class ClientScreen(MDScreen):
         )
         date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
         date_dialog.open()
+
+    def closeClient(self, *args):
+        self.dialog.dismiss()
+
+    def openClient(self, client: dict, *args):
+        self.dialog = MDDialog(
+                title="Dados do Cliente Abaixo:",
+                type="custom",
+                content_cls=ContentClient(data_client=client),
+                buttons=[
+                    MDFlatButton(
+                        text="SAIR",
+                        theme_text_color="Custom",
+                        text_color="white",
+                        md_bg_color="red",
+                        on_release=self.closeClient
+                    )
+                ],
+            )
+        self.dialog.open()

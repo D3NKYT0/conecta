@@ -1,0 +1,435 @@
+#: import hex kivy.utils.get_color_from_hex
+
+
+<ContentClientOpen>:
+    id: box_open_client
+    orientation: "horizontal"
+    spacing: 20
+
+    MDBoxLayout:
+        id: box_right_client
+        size_hint_x: 0.5
+        orientation: "vertical"
+
+        MDTextField:
+            id: br_cpf
+            hint_text: "CPF"
+
+        MDTextField:
+            id: br_name
+            hint_text: "Nome"
+
+        MDTextField:
+            id: br_cep
+            hint_text: "CEP"
+
+        MDTextField:
+            id: br_logradouro
+            hint_text: "Logradouro"
+
+        MDTextField:
+            id: br_complemento
+            hint_text: "Complemento"
+
+        MDTextField:
+            id: br_estado
+            hint_text: "Estado"
+
+        MDTextField:
+            id: br_municipio
+            hint_text: "Municipio"
+
+        MDTextField:
+            id: br_bairro
+            hint_text: "Bairro"
+
+
+    MDBoxLayout:
+        id: box_left_client
+        size_hint_x: 0.5
+        orientation: "vertical"
+
+        MDBoxLayout:
+            size_hint_y: 0.88
+            orientation: "vertical"
+
+            MDTextField:
+                id: bl_telefone
+                hint_text: "Telefone"
+
+            MDTextField:
+                id: bl_celular
+                hint_text: "Celular"
+
+            MDTextField:
+                id: bl_email 
+                hint_text: "Email"
+
+            MDTextField:
+                id: bl_linha_de_credito
+                hint_text: "Linha de Credito"
+
+            MDTextField:
+                id: bl_atividade
+                hint_text: "Atividade"
+            
+            MDTextField:
+                id: bl_tempo_de_atividade
+                hint_text: "Tempo de Atividade"
+
+            MDTextField:
+                id: bl_agente
+                hint_text: "Agente"
+
+        MDBoxLayout:
+            size_hint_y: 0.12
+            orientation: "horizontal"
+
+            MDRaisedButton:
+                id: btSaveClient
+                text: "Salvar"
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                md_bg_color: 'green'
+                on_release: root.saveClient()
+
+                
+<ContentClient>:
+    orientation: "vertical"
+    size_hint_y: None
+    md_bg_color: hex("#ECF3F4")
+    height: "500dp"
+
+    MDBoxLayout:
+        id: box_close_client
+        orientation: "horizontal"
+        spacing: 20
+
+        MDBoxLayout:
+            id: box_close_right_client
+            size_hint_x: 0.5
+            orientation: "vertical"
+
+            MDLabel:
+                text: 'CPF'
+                color: app.theme_cls.primary_color
+                bold: True
+                # halign: "center"
+                font_size: '18sp'
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                md_bg_color: 'white'
+
+                MDLabel:
+                    id: label_br_cpf
+                    text: '123.456.789-10'
+                    color: 'black'
+                    bold: True
+                    halign: "center"
+                    font_size: '18sp'
+                    size_hint_y: 0.05
+
+            MDLabel:
+                text: 'Nome'
+                color: app.theme_cls.primary_color
+                bold: True
+                # halign: "center"
+                font_size: '18sp'
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                md_bg_color: 'white'
+
+                MDLabel:
+                    id: label_br_name
+                    text: 'Daniel José do Amaral Filho'
+                    color: 'black'
+                    bold: True
+                    halign: "center"
+                    font_size: '18sp' if len(self.text) < 15 else '16sp'
+                    size_hint_y: 0.05
+
+            MDLabel:
+                text: 'CEP'
+                color: app.theme_cls.primary_color
+                bold: True
+                # halign: "center"
+                font_size: '18sp'
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                md_bg_color: 'white'
+
+                MDLabel:
+                    id: label_br_cep
+                    text: '54.150-095'
+                    color: 'black'
+                    bold: True
+                    halign: "center"
+                    font_size: '18sp'
+                    size_hint_y: 0.05
+
+            MDLabel:
+                text: 'Logradouro'
+                color: app.theme_cls.primary_color
+                bold: True
+                # halign: "center"
+                font_size: '18sp'
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                md_bg_color: 'white'
+
+                MDLabel:
+                    id: label_br_logradouro
+                    text: 'Rua das flores'
+                    color: 'black'
+                    bold: True
+                    halign: "center"
+                    font_size: '18sp'
+                    size_hint_y: 0.05
+
+            MDLabel:
+                text: 'Complemento'
+                color: app.theme_cls.primary_color
+                bold: True
+                # halign: "center"
+                font_size: '18sp'
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                md_bg_color: 'white'
+
+                MDLabel:
+                    id: label_br_complemento
+                    text: 'sem complemento'
+                    color: 'black'
+                    bold: True
+                    halign: "center"
+                    font_size: '18sp'
+                    size_hint_y: 0.05
+
+            MDLabel:
+                text: 'Estado'
+                color: app.theme_cls.primary_color
+                bold: True
+                # halign: "center"
+                font_size: '18sp'
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                md_bg_color: 'white'
+
+                MDLabel:
+                    id: label_br_estado
+                    text: 'Pernambuco'
+                    color: 'black'
+                    bold: True
+                    halign: "center"
+                    font_size: '18sp'
+                    size_hint_y: 0.05
+
+            MDLabel:
+                text: 'Municipio'
+                color: app.theme_cls.primary_color
+                bold: True
+                # halign: "center"
+                font_size: '18sp'
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                md_bg_color: 'white'
+
+                MDLabel:
+                    id: label_br_municipio
+                    text: 'Jaboatão dos Guararapes'
+                    color: 'black'
+                    bold: True
+                    halign: "center"
+                    font_size: '18sp'
+                    size_hint_y: 0.05
+
+            MDLabel:
+                text: 'Bairro'
+                color: app.theme_cls.primary_color
+                bold: True
+                # halign: "center"
+                font_size: '18sp'
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                md_bg_color: 'white'
+
+                MDLabel:
+                    id: label_br_bairro
+                    text: 'Engenho Velho'
+                    color: 'black'
+                    bold: True
+                    halign: "center"
+                    font_size: '18sp'
+                    size_hint_y: 0.05
+
+        MDBoxLayout:
+            id: box_close_left_client
+            size_hint_x: 0.5
+            orientation: "vertical"
+
+            MDBoxLayout:
+                size_hint_y: 0.88
+                orientation: "vertical"
+
+                MDLabel:
+                    text: 'Telefone'
+                    color: app.theme_cls.primary_color
+                    bold: True
+                    # halign: "center"
+                    font_size: '18sp'
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    md_bg_color: 'white'
+
+                    MDLabel:
+                        id: label_bl_telefone
+                        text: '(81) 9.8447-1087'
+                        color: 'black'
+                        bold: True
+                        halign: "center"
+                        font_size: '18sp'
+                        size_hint_y: 0.05
+
+                MDLabel:
+                    text: 'Celular'
+                    color: app.theme_cls.primary_color
+                    bold: True
+                    # halign: "center"
+                    font_size: '18sp'
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    md_bg_color: 'white'
+
+                    MDLabel:
+                        id: label_bl_celular
+                        text: '(81) 9.8447-1087'
+                        color: 'black'
+                        bold: True
+                        halign: "center"
+                        font_size: '18sp'
+                        size_hint_y: 0.05
+
+                MDLabel:
+                    text: 'Email'
+                    color: app.theme_cls.primary_color
+                    bold: True
+                    # halign: "center"
+                    font_size: '18sp'
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    md_bg_color: 'white'
+
+                    MDLabel:
+                        id: label_bl_email
+                        text: 'danielamaral.f@hotmail.com'
+                        color: 'black'
+                        bold: True
+                        halign: "center"
+                        font_size: '18sp' if len(self.text) < 15 else '16sp'
+                        size_hint_y: 0.05
+
+                MDLabel:
+                    text: 'Linha de Credito'
+                    color: app.theme_cls.primary_color
+                    bold: True
+                    # halign: "center"
+                    font_size: '18sp'
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    md_bg_color: 'white'
+
+                    MDLabel:
+                        id: label_bl_linha_de_credito
+                        text: 'Credito Popular'
+                        color: 'black'
+                        bold: True
+                        halign: "center"
+                        font_size: '18sp'
+                        size_hint_y: 0.05
+
+                MDLabel:
+                    text: 'Atividade'
+                    color: app.theme_cls.primary_color
+                    bold: True
+                    # halign: "center"
+                    font_size: '18sp'
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    md_bg_color: 'white'
+
+                    MDLabel:
+                        id: label_bl_atividade
+                        text: 'Casa de Atividade Noturna'
+                        color: 'black'
+                        bold: True
+                        halign: "center"
+                        font_size: '18sp' if len(self.text) < 15 else '16sp'
+                        size_hint_y: 0.05
+                
+                MDLabel:
+                    text: 'Tempo de Atividade'
+                    color: app.theme_cls.primary_color
+                    bold: True
+                    # halign: "center"
+                    font_size: '18sp'
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    md_bg_color: 'white'
+
+                    MDLabel:
+                        id: label_bl_tempo_de_atividade
+                        text: ' mais de 3 anos'
+                        color: 'black'
+                        bold: True
+                        halign: "center"
+                        font_size: '18sp'
+                        size_hint_y: 0.05
+
+                MDLabel:
+                    text: 'Agente'
+                    color: app.theme_cls.primary_color
+                    bold: True
+                    # halign: "center"
+                    font_size: '18sp'
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    md_bg_color: 'white'
+
+                    MDLabel:
+                        id: label_bl_agente
+                        text: 'Ailton Chupetinha'
+                        color: 'black'
+                        bold: True
+                        halign: "center"
+                        font_size: '18sp'
+                        size_hint_y: 0.05
+
+            MDBoxLayout:
+                size_hint_y: 0.12
+                orientation: "vertical"
+
+                MDBoxLayout:
+                    size_hint_y: 0.5
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+
+                    MDRaisedButton:
+                        text: "Editar"
+                        pos_hint: {'center_x': .5, 'center_y': .5}
+                        md_bg_color: 'orange'
+                        on_release: root.editClient(box_close_client)
