@@ -44,7 +44,7 @@ class AgeApp(MDApp):
 
     def __init__(self, config_app, **kwargs):
         super().__init__(**kwargs)
-        self.__version__ = "0.0.26.0"
+        self.__version__ = "0.0.27.0"
         self.config_app = config_app
         self.token = self.config_app.data["token"]
         self.homologation = self.config_app.HOMOLOGATION_HOST
