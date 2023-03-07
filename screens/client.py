@@ -120,7 +120,7 @@ class ClientScreen(MDScreen):
             self.ep = [
             "jaboatao",
             "recife",
-            "outros"
+            "camaragibe"
         ]
         elif menu == "cliente":
             self.ep = [
@@ -130,9 +130,9 @@ class ClientScreen(MDScreen):
         ]
         elif menu == "agente":
             self.ep = [
-            "vinicius pau brasil",
-            "eduardo carvalho",
-            "edilberto acacia"
+            "vinicius",
+            "eduardo",
+            "edilberto"
         ]
         self.start_menu(menu)
 
